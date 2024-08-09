@@ -22,6 +22,8 @@ public class RewardPunishmentCategory {
     private Integer categoryId;
     // 类别名称
     private String categoryName;
+
+    private String subCategoryName;
     // 类别说明
     private String description;
 
