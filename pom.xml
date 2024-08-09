@@ -48,8 +48,8 @@
         </dependency>
         <dependency>
             <groupId>com.tangzc</groupId>
-            <artifactId>mybatis-plus-ext-boot-starter</artifactId>
-            <version>3.5.5-EXT560</version>
+            <artifactId>mybatis-plus-ext-spring-boot3-starter</artifactId>
+            <version>3.5.7-EXT691</version>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
