@@ -19,6 +19,7 @@ public class Role {
 
     private Integer id;
     private Integer roleId;
+    //管理员，普通用户，组员，组长，队长
     private String roleName;
 
 }

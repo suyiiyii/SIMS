@@ -26,6 +26,4 @@ public class HierarchyRelation {
     // 下级用户ID
     private Integer subordinateUserId;
 
-    // 关系类型
-    private String relationType;
 }
