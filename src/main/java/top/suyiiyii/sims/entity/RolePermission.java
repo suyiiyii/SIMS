@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.security.Permission;
 
@@ -18,8 +20,11 @@ import java.security.Permission;
  */
 @Data
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class RolePermission {
-    private Integer rolePermissionId;
+    @TableId("id")
+    private Integer id;
     private Integer roleId;
     private Integer permissionId;
 }

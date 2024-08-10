@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +20,10 @@ import java.time.LocalDateTime;
  */
 @Data
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class RewardPunishmentRecord {
-
+    @TableId("id")
     private Integer id;
     // 用户ID
     private Integer userId;
