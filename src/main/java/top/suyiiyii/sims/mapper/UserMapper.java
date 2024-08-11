@@ -21,7 +21,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user 新用户对象
      * @return 影响的行数
      */
-    @Insert("insert INTO user (id,userId, username, password, name, email, group) VALUES (#{id},#{userId}, #{username}, #{password}, #{name}, #{email}, #{group})")
+    @Insert("insert INTO user (id,user_id, username, password, name, email, `group`) VALUES (#{id},#{userId}, #{username}, #{password}, #{name}, #{email}, #{group})")
     int addUser(User user);
 
     /**
@@ -38,12 +38,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 影响的行数
      */
     @Update("UPDATE user SET " +
-            "userId = #{userId}, " +
+            "user_id = #{userId}, " +
             "username = #{username}, " +
             "password = #{password}, " +
             "name = #{name}, " +
             "email = #{email}, " +
-            "group = #{group} " +
+            "`group` = #{group} " +
             "WHERE id = #{id}")
     int updateUser(User user);
 
@@ -52,14 +52,14 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userId 用户ID
      * @return 用户对象
      */
-    @Select("SELECT (id, userId, username, password, name, email, group) from user WHERE userId = #{userId}")
+    @Select("SELECT id, user_id, username, password, name, email, `group` from user WHERE user_id = #{userId}")
     User selectByUserId(Integer userId);
 
     /**
      * 查询所有用户信息
      * @return 用户列表
      */
-    @Select("SELECT id, userId, username, password, name, email, group FROM user")
+    @Select("SELECT id, user_id, username, password, name, email, `group` FROM user")
     List<User> selectAll();
 
   @Select("select * from user where username = #{username}")
