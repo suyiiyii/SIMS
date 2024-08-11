@@ -30,6 +30,7 @@ public class UserController {
         return Result.success("success");
 
     }
+
     @PostMapping("/login")
     public Result login(@RequestBody User user){
         if(StrUtil.isBlank(user.getUsername())||StrUtil.isBlank(user.getPassword())){
@@ -61,5 +62,13 @@ public class UserController {
     public Result selectAll() {
         List<User> users = userService.selectAll();
         return Result.success(users);
+    }
+    @PostMapping("/add")
+    public Result add(@RequestBody User user) {
+
+            userService.addUser(user);
+
+        return Result.success();
+
     }
 }
