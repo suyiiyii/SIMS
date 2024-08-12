@@ -3,6 +3,7 @@ package top.suyiiyii.sims.controller;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
@@ -24,6 +25,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+@AuthAccess
     @GetMapping("/")
     public Result hello(){
 
@@ -42,6 +44,7 @@ public class UserController {
 
         return Result.success(user);
     }
+
     @PostMapping("/register")
     public Result register(@RequestBody User user){
         if(StrUtil.isBlank(user.getUsername())||StrUtil.isBlank(user.getPassword())){
@@ -56,6 +59,7 @@ public class UserController {
 
         return Result.success(user);
     }
+
 
 
     @GetMapping("/selectAll")

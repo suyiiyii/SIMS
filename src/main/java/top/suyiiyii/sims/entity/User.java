@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * @Version 1.0
  */
 @Data
-@Table
+/*@Table*/
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -29,5 +29,6 @@ public class User {
     private String name;
     private String email;
     private String group;
-
+    @TableField(exist = false)
+    private String token;
 }
