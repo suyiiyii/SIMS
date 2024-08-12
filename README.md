@@ -10,7 +10,7 @@ Super Invincible Management System
 5. git fetch origin && git merge origin/main: 拉取远程仓库的最新代码并合并到当前分支
 6. git push origin xxx: 推送当前分支到远程仓库
 7. 提 PR
-8. require review: 请求review
+8. require review: 请求reviewpush
 9. merge: 合并 PR
 10. delete: 删除分支
  

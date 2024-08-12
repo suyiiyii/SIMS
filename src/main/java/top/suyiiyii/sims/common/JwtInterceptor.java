@@ -1,10 +1,6 @@
 package top.suyiiyii.sims.common;
 
 import cn.hutool.core.util.StrUtil;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.UserMapper;
+import top.suyiiyii.sims.utils.JwtUtils;
 
 /**
  * @Author tortoise
@@ -32,12 +29,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 从 Authorization 头中获取 token
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7); // 去除 "Bearer " 前缀
+            token = token.substring(7);
+            // 去除 "Bearer " 前缀
         } else {
             // 如果 Authorization 头中没有 token，则尝试从请求参数中获取
             token = request.getParameter("token");
         }
-
         // 如果不是映射到方法直接通过
         if (handler instanceof HandlerMethod) {
             AuthAccess annotation = ((HandlerMethod) handler).getMethodAnnotation(AuthAccess.class);
@@ -45,17 +42,14 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-
         // 执行认证
         if (StrUtil.isBlank(token)) {
-            throw new ServiceException("401", "请登录");//权限错误
+            //权限错误
+            throw new ServiceException("401", "请登录");
         }
-
         // 获取 token 中的 user id
-        String userId;
-        try {
-            userId = JWT.decode(token).getAudience().get(0);
-        } catch (JWTDecodeException j) {
+        String userId= JwtUtils.extractUserId(token);
+        if (userId == null) {
             throw new ServiceException("401", "请登录");
         }
 
@@ -63,12 +57,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (user == null) {
             throw new ServiceException("401", "请登录");
         }
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();//加密,认证
-//jwtVerifier  验证器
-        try {
-            jwtVerifier.verify(token);
-        } catch (JWTDecodeException e) {
-
+        // 验证 token 的有效性
+        if (!JwtUtils.verifyToken(token, user.getPassword())) {
             throw new ServiceException("401", "请登录");
         }
         return true;

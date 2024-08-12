@@ -49,10 +49,10 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 根据ID查询用户信息
-     * @param userId 用户ID
+     * @param id 用户ID
      * @return 用户对象
      */
-    @Select("SELECT id, user_id, username, password, name, email, `group` from user WHERE user_id = #{userId}")
+    @Select("SELECT id, user_id, username, password, name, email, `group` from user WHERE id = #{Id}")
     User selectByUserId(Integer userId);
 
     /**

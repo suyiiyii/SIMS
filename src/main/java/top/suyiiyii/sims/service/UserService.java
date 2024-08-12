@@ -2,14 +2,14 @@ package top.suyiiyii.sims.service;
 
 
 
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.UserMapper;
-import top.suyiiyii.sims.utils.TokenUtils;
+import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class UserService {
         userMapper.addUser(user);
     }
 
-    public User selectByUserId(int id) {
-        return userMapper.selectByUserId(id);
+    public User selectById(int id) {
+        return userMapper.selectById(id);
     }
 
     public void updateUser(User user) {
@@ -54,7 +54,7 @@ public class UserService {
         if (!dbUser.getPassword().equals(user.getPassword())) {
             throw new ServiceException("密码或用户名错误");
         }
-        String token = TokenUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
+        String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
         dbUser.setToken(token);
         return dbUser;
     }
@@ -84,7 +84,9 @@ public class UserService {
 
             userMapper.addUser(user);
             return user;
+    }
 
-
+    public User selectByUsername(String username) {
+        return userMapper.selectByUserName(username);
     }
 }

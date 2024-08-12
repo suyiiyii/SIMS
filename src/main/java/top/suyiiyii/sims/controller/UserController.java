@@ -73,6 +73,24 @@ public class UserController {
             userService.addUser(user);
 
         return Result.success();
+    }
+    @PostMapping("/delete")
+    public Result delete(@RequestBody User user) {
+        userService.deleteUser(user.getId());
+        return Result.success("删除成功");
+    }
+    @PostMapping("/update")
+    public Result update(@RequestBody User user) {
+        userService.updateUser(user);
+        return Result.success("更新成功");
+    }
+    @PostMapping("/select")
+    public Result select(@RequestBody User user) {
+        return Result.success(userService.selectById(user.getId()));
 
+    }
+    @PostMapping("/selectByUsername")
+    public Result selectByUsername(@RequestBody User user) {
+        return Result.success(userService.selectByUsername(user.getUsername()));
     }
 }
