@@ -56,6 +56,13 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByUserId(Integer userId);
 
     /**
+     * 根据iD查询用户信息
+     * @param
+     * @return 用户对象
+     */
+    @Select("SELECT id, user_id, username, password, name, email, `group` from user WHERE id = #{Id}")
+    User selectById(Integer Id);
+    /**
      * 查询所有用户信息
      * @return 用户列表
      */

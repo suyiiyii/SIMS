@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
         protected void addInterceptors(InterceptorRegistry registry) {
             registry.addInterceptor(jwtInterceptor())
                     .addPathPatterns("/**")
-                    .excludePathPatterns("/login"); // 排除不需要验证的路径
+                    .excludePathPatterns("/user/login"); // 排除不需要验证的路径
             super.addInterceptors(registry);
         }
 

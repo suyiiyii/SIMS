@@ -59,7 +59,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new ServiceException("401", "请登录");
         }
 
-        User user = userMapper.selectByUserId(Integer.parseInt(userId));
+        User user = userMapper.selectById(Integer.parseInt(userId));
         if (user == null) {
             throw new ServiceException("401", "请登录");
         }
