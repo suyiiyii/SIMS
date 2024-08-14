@@ -2,6 +2,7 @@ package top.suyiiyii.sims.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
+import top.suyiiyii.sims.entity.Role;
 import top.suyiiyii.sims.entity.User;
 
 import java.util.List;
@@ -40,7 +41,6 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET " +
             "user_id = #{userId}, " +
             "username = #{username}, " +
-            "password = #{password}, " +
             "name = #{name}, " +
             "email = #{email}, " +
             "`group` = #{group} " +
@@ -71,5 +71,7 @@ public interface UserMapper extends BaseMapper<User> {
 
   @Select("select * from user where username = #{username}")
    User selectByUserName(@Param("username") String username);
+@Update("update user set password = #{password} where username = #{username}")
+    void updatePassword(User user);
 
 }

@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 /**
  * @Author tortoise
  * @Date 2024/8/9 14:02
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
  * @Version 1.0
  */
 @Data
-/*@Table*/
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -31,4 +33,6 @@ public class User {
     private String group;
     @TableField(exist = false)
     private String token;
+    @TableField(exist = false)
+    private Set<Permissions> permissions;
 }

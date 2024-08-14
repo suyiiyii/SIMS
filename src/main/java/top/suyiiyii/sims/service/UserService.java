@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import top.suyiiyii.sims.common.Result;
-import top.suyiiyii.sims.entity.User;
+import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
+import top.suyiiyii.sims.mapper.PermissionsMapper;
+import top.suyiiyii.sims.mapper.RoleMapper;
 import top.suyiiyii.sims.mapper.UserMapper;
 import top.suyiiyii.sims.utils.JwtUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -25,6 +30,10 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    RoleMapper roleMapper;
+    @Autowired
+    PermissionsMapper permissionsMapper;
 
     public void addUser(User user) {
         userMapper.addUser(user);
@@ -54,6 +63,21 @@ public class UserService {
         if (!dbUser.getPassword().equals(user.getPassword())) {
             throw new ServiceException("密码或用户名错误");
         }
+        HashSet<Permissions> permissionsSet = new HashSet<>();
+        Integer id = dbUser.getId();
+        List<UserRole> UserRoles = roleMapper.selectRolesById(id);
+        for (UserRole userRole : UserRoles) {
+            //根据roleid找所有permissionId
+            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(userRole.getRoleId());
+            for (RolePermission rolePermission : rolePerminsion) {
+                Integer permissionId = rolePermission.getPermissionId();
+                //根据permissionId找permission
+                Permissions permissions = permissionsMapper.selectById(permissionId);
+                permissionsSet.add(permissions);
+            }
+        }
+        dbUser.setPermissions(permissionsSet);
+
         String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
         dbUser.setToken(token);
         return dbUser;
@@ -89,4 +113,9 @@ public class UserService {
     public User selectByUsername(String username) {
         return userMapper.selectByUserName(username);
     }
+
+    public void updatePassword(User user) {
+        userMapper.updatePassword(user);
+    }
+
 }

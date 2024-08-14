@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * @Author tortoise
  * @Date 2024/8/9 14:02
  * @PackageName:top.suyiiyii.sims.entity
- * @ClassName: Role
+ * @ClassName: RoleMapper
  * @Description: TODO
  * @Version 1.0
  */
