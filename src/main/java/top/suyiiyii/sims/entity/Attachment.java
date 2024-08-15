@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author tortoise
@@ -16,7 +18,10 @@ import lombok.Data;
  */
 @Data
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class Attachment {
+    @TableId("id")
     private Integer id;
     private Integer recordId;
     // 文件路径

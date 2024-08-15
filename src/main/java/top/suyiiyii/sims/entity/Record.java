@@ -1,10 +1,10 @@
 package top.suyiiyii.sims.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -12,14 +12,16 @@ import java.time.LocalDateTime;
  * @Author tortoise
  * @Date 2024/8/9 14:04
  * @PackageName:top.suyiiyii.sims.entity
- * @ClassName: RewardPunishmentRecord
+ * @ClassName: Record
  * @Description: TODO
  * @Version 1.0
  */
 @Data
 @Table
-public class RewardPunishmentRecord {
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class Record {
+    @TableId("id")
     private Integer id;
     // 用户ID
     private Integer userId;

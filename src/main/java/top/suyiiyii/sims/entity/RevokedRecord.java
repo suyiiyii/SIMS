@@ -1,7 +1,10 @@
 package top.suyiiyii.sims.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -15,8 +18,10 @@ import java.time.LocalDateTime;
  */
 @Data
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class RevokedRecord {
-
+    @TableId("id")
     private Integer id;
     // 被撤销的奖惩记录ID
     private Integer recordId;

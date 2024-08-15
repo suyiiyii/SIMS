@@ -3,6 +3,7 @@ package top.suyiiyii.sims.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.suyiiyii.sims.common.Result;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ public class HelloController {
     public List<String> helloPost(String username , Integer age) {
         List<String> list = List.of(username,age.toString());
         return list;
+    }
+    @GetMapping("/helloResult")
+    public Result healthz() {
+        return Result.success("Hello World");
     }
 
 }
