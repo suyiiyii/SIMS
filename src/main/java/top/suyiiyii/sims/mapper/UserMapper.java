@@ -66,7 +66,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 查询所有用户信息
      * @return 用户列表
      */
-    @Select("SELECT id, user_id, username, password, name, email, `group` FROM user")
+    @Select("SELECT id, user_id, username, password, name, email,grade, `group` FROM user")
     List<User> selectAll();
 
   @Select("select * from user where username = #{username}")

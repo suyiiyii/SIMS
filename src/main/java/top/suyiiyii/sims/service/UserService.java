@@ -5,7 +5,9 @@ package top.suyiiyii.sims.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import top.suyiiyii.sims.VO.UserVO;
 import top.suyiiyii.sims.common.Result;
+import top.suyiiyii.sims.dto.UserDTO;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.PermissionsMapper;
@@ -109,13 +111,35 @@ public class UserService {
             userMapper.addUser(user);
             return user;
     }
-
     public User selectByUsername(String username) {
         return userMapper.selectByUserName(username);
     }
-
     public void updatePassword(User user) {
         userMapper.updatePassword(user);
+    }
+    public List<UserVO> findAllUsers(){
+        List<User> users = userMapper.selectAll();
+        List<UserVO> userVOS = new ArrayList<>();
+
+        for (User user : users) {
+            UserVO userVO = new UserVO();
+            userVO.setUserId(user.getId());
+            userVO.setUsername(user.getUsername());
+            userVO.setGrade(user.getGrade());
+            userVO.setGroup(user.getGroup());
+            userVO.setRoles(new ArrayList<>());
+            Integer id = user.getId();
+            List<UserRole> userRoles = roleMapper.selectRolesById(id);
+            for (UserRole userRole : userRoles) {
+                Integer roleId = userRole.getRoleId();
+                // 获取一个角色的名称列表
+                List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
+                // 累加角色名称到用户的角色列表中
+                userVO.getRoles().addAll(roleNameList);
+            }
+            userVOS.add(userVO);
+        }
+        return userVOS;
     }
 
 }

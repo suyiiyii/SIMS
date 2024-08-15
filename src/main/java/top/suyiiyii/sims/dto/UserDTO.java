@@ -1,0 +1,21 @@
+package top.suyiiyii.sims.dto;
+
+import lombok.Data;
+
+import java.util.List;
+
+/**
+ * @Author tortoise
+ * @Date 2024/8/15 15:36
+ * @PackageName:top.suyiiyii.sims.dto
+ * @ClassName: UserDTO
+ * @Description: TODO
+ * @Version 1.0
+ */
+@Data
+public class UserDTO {
+    private Long userId;
+    private String username;
+    private List<String> roles; // 角色名称列表
+    private List<String> permissions; // 权限列表
+}
