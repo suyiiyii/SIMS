@@ -8,12 +8,12 @@ import java.util.List;
  * @Author tortoise
  * @Date 2024/8/15 15:36
  * @PackageName:top.suyiiyii.sims.dto
- * @ClassName: UserDTO
+ * @ClassName: UserDto
  * @Description: TODO
  * @Version 1.0
  */
 @Data
-public class UserDTO {
+public class UserDto {
     private Long userId;
     private String username;
     private List<String> roles; // 角色名称列表

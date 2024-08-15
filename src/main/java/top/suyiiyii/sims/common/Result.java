@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.suyiiyii.sims.dto.CommonResponse;
 
 /**
  * @Author tortoise
@@ -33,6 +34,10 @@ public class Result<T> { // 添加类型参数 T
 
     public static <T> Result<T> success(T data) { // 添加类型参数 T 并指定返回类型
         return new Result<>(CODE_SUCCESS, "success", data);
+    }
+
+    public static Result<CommonResponse> msg(String msg) {
+        return success(CommonResponse.factory(msg));
     }
 
     public static <T> Result<T> error(String msg) { // 添加类型参数 T 并指定返回类型
