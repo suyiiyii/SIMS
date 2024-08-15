@@ -1,6 +1,5 @@
 package top.suyiiyii.sims.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
@@ -25,7 +24,7 @@ import java.util.Set;
 public class User {
     @TableId("id")
     private Integer id;
-    private Integer userId;
+    private Integer studentId;
     private String username;
     private String password;
     private String email;

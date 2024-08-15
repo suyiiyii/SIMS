@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import top.suyiiyii.sims.VO.UserVO;
-import top.suyiiyii.sims.common.Result;
-import top.suyiiyii.sims.dto.UserDTO;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.PermissionsMapper;
@@ -16,10 +14,8 @@ import top.suyiiyii.sims.mapper.UserMapper;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 
 /**
  * @Author tortoise
@@ -88,7 +84,7 @@ public class UserService {
 
     public User register(User user) {
 
-        User dbUser = userMapper.selectByUserId(user.getUserId());
+        User dbUser = userMapper.selectByUserId(user.getStudentId());
 
         if (user.getUsername() == null || user.getUsername().equals("")) {
         throw new ServiceException("用户名不能为空");
@@ -96,7 +92,7 @@ public class UserService {
         if (dbUser != null) {
             throw new ServiceException("账号已经存在");
         }
-        if (user.getUserId() == null || user.getUserId().equals("")) {
+        if (user.getStudentId() == null || user.getStudentId().equals("")) {
             throw new ServiceException("用户id不能为空");
         }
         if( user.getPassword() == null || user.getPassword().equals("")) {
