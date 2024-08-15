@@ -42,6 +42,10 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
+
+   //     request.setAttribute();
+   //     request.getAttribute()
+
         // 执行认证
         if (StrUtil.isBlank(token)) {
             //权限错误

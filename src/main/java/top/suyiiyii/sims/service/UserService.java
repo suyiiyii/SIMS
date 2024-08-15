@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.ToDoubleBiFunction;
 
 /**
  * @Author tortoise
@@ -56,13 +57,13 @@ public class UserService {
     public List<User> selectAll() {
         return userMapper.selectAll();
     }
-
-    public User login(User user) {
-        User dbUser = userMapper.selectByUserName(user.getUsername());
+//TODO:返回一个DTO,用户基本信息
+    public User login(String username, String password)  {
+        User dbUser = userMapper.selectByUserName(username);
         if (dbUser == null) {
             throw new ServiceException("账号不存在");
         }
-        if (!dbUser.getPassword().equals(user.getPassword())) {
+        if (!dbUser.getPassword().equals(password)) {
             throw new ServiceException("密码或用户名错误");
         }
         HashSet<Permissions> permissionsSet = new HashSet<>();

@@ -10,36 +10,40 @@ import lombok.NoArgsConstructor;
  * @Date 2024/8/10 21:18
  * @PackageName:top.suyiiyii.sims.common
  * @ClassName: Result
- * @Description: TODO
+ * @Description: 泛型结果对象
  * @Version 1.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Result {
+public class Result<T> { // 添加类型参数 T
 
-    public static final String CODE_SUCCESS="200";
-    public static final String CODE_AUTH_ERROR="401";
-    public static final String CODE_SYS_ERROR="500";
+    public static final String CODE_SUCCESS = "200";
+    public static final String CODE_AUTH_ERROR = "401";
+    public static final String CODE_SYS_ERROR = "500";
+
     private String code;
-
     private String msg;
-    private Object data;
-    public static Result success(){
-        return new Result(CODE_SUCCESS,"success",null);
-    }
-    public static Result success(Object data){
-        return new Result(CODE_SUCCESS,"success",data);
-    }
-    public static Result error(String msg) {
-        return new Result(CODE_SYS_ERROR, msg, null);
+    private T data; // 将 Object 改为 T
+
+    public static <T> Result<T> success() { // 添加类型参数 T 并指定返回类型
+        return new Result<>(CODE_SUCCESS, "success", null);
     }
 
-    public static Result error(String code,String msg){
-        return new Result(code,msg,null);
+    public static <T> Result<T> success(T data) { // 添加类型参数 T 并指定返回类型
+        return new Result<>(CODE_SUCCESS, "success", data);
     }
-    public static Result authError(String msg){
-        return new Result(CODE_AUTH_ERROR,"系统错误",null);
+
+    public static <T> Result<T> error(String msg) { // 添加类型参数 T 并指定返回类型
+        return new Result<>(CODE_SYS_ERROR, msg, null);
+    }
+
+    public static <T> Result<T> error(String code, String msg) { // 添加类型参数 T 并指定返回类型
+        return new Result<>(code, msg, null);
+    }
+
+    public static <T> Result<T> authError(String msg) { // 添加类型参数 T 并指定返回类型
+        return new Result<>(CODE_AUTH_ERROR, "认证错误", null);
     }
 }

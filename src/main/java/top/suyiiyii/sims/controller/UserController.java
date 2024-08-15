@@ -1,6 +1,7 @@
 package top.suyiiyii.sims.controller;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
@@ -37,15 +38,27 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user){
-        if(StrUtil.isBlank(user.getUsername())||StrUtil.isBlank(user.getPassword())){
+    public Result login(LoginRequest request){
+
+        if(StrUtil.isBlank(request.getUsername())||StrUtil.isBlank(request.getPassword())){
 
             return Result.error("用户名或密码不能为空");
         }
-        user =userService.login(user);
 
+        User user = userService.login(request.getUsername(), request.getPassword());
 
         return Result.success(user);
+    }
+
+    @Data
+    public static class LoginRequest{
+        public String username;
+        public String password;
+    }
+
+    @Data
+    public static class LoginResponse{
+        public String token;
     }
 
     @PostMapping("/register")

@@ -34,21 +34,15 @@ public class AdminController {
         List<User> userList = roleService.findAllUsersWithRoles();
         return Result.success(userList);
     }
+
     @GetMapping("/selectAll")
     public Result selectAll() {
         List<User> users = userService.selectAll();
         return Result.success(users);
     }
+}
 /**
- * @author: tortoise
- * @date: 2024/8/15 16:27
- * @Description: TODO 查看所有成员的信息（姓名，学号，年级，组别，担任角色）
- * @param
- * @return: top.suyiiyii.sims.common.Result
- */
-    @GetMapping("/findAllUsers")
-    public Result findAllUsers() {
-        List<UserVO> userList = userService.findAllUsers();
+ request.setAttribute();lUsers();
         return Result.success(userList);
     }
 }
