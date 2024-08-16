@@ -17,6 +17,7 @@ import top.suyiiyii.sims.mapper.UserMapper;
 import top.suyiiyii.sims.service.CategoryService;
 import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RoleService;
+import top.suyiiyii.sims.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ RecordController {
     @Autowired
     RecordService recordService;
     @Autowired
-    UserMapper userMapper;
+    UserService UserService;
     @Autowired
     RoleService roleService;
     @Autowired
@@ -36,18 +37,21 @@ RecordController {
 
     @Operation(summary = "获取所有奖惩记录")
     @GetMapping("/admin/record")
-    public Result<List<RecordDto>> adminRecord(Integer page, Integer size) {
+    public Result<List<RecordDto>> adminRecord(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         List<RecordDto> recordDtos=new ArrayList<>();
+
         List<Record> records = recordService.getAllRecords(page, size);
         for (Record record : records) {
             RecordDto recordDto = new RecordDto();
             Integer studentId=record.getStudentId();
             recordDto.setStudentId(studentId);
-            User user = userMapper.selectByUserId(studentId);
+            User user = UserService.selectByUserId(studentId);
             recordDto.setName(user.getUsername());
             recordDto.setGrade(user.getGrade());
             recordDto.setGroup(user.getUserGroup());
-            List<Role> roles = roleService.selectRolesById(studentId);
+            List<Role> roles = UserService.selectRolesById(studentId);
             ArrayList<String> roleName = new ArrayList<>();
             for (Role role : roles) {
                 roleName.add(role.getRoleName());

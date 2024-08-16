@@ -123,7 +123,7 @@ public class UserService {
             UserDto.setUserId(user.getId());
             UserDto.setUsername(user.getUsername());
             UserDto.setGrade(user.getGrade());
-            UserDto.setGroup(user.getUserGroup());
+            UserDto.setUserGroup(user.getUserGroup());
             UserDto.setRoles(new ArrayList<>());
             Integer id = user.getId();
             List<Role> roles = roleMapper.selectRolesById(id);
@@ -145,7 +145,7 @@ public class UserService {
         UserDto.setUserId(user.getId());
         UserDto.setUsername(user.getUsername());
         UserDto.setGrade(user.getGrade());
-        UserDto.setGroup(user.getUserGroup());
+        UserDto.setUserGroup(user.getUserGroup());
         UserDto.setRoles(new ArrayList<>());
         List<Role> roles = roleMapper.selectRolesById(id);
         for (Role role : roles) {
@@ -158,5 +158,13 @@ public class UserService {
 
 
         return UserDto;
+    }
+
+    public User selectByUserId(Integer studentId) {
+        return userMapper.selectByUserId(studentId);
+    }
+
+    public List<Role> selectRolesById(Integer studentId) {
+        return roleMapper.selectRolesById(studentId);
     }
 }

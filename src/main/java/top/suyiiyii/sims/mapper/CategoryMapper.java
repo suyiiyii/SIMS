@@ -13,10 +13,10 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface CategoryMapper {
-    @Select("SELECT * FROM category WHERE categoryId=#{id}")
+    @Select("SELECT * FROM reward_punishment_category WHERE category_id=#{id}")
     String getCategoryName(Integer categoryId);
 
-    @Select("SELECT categoryName FROM category WHERE categoryId=#{categoryId}")
+    @Select("SELECT category_name FROM reward_punishment_category WHERE category_id=#{categoryId}")
 
         String getSubCategoryName(Integer categoryId);
 }

@@ -17,6 +17,6 @@ public class UserDto {
     private Integer userId;
     private String username;
     private String grade;
-    private String group;
+    private String userGroup;
     private List<String> roles; // 角色名称列表
 }
