@@ -2,10 +2,12 @@ package top.suyiiyii.sims.service;
 
 
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import top.suyiiyii.sims.VO.UserVO;
+
+import top.suyiiyii.sims.dto.UserDto;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.PermissionsMapper;
@@ -38,10 +40,6 @@ public class UserService {
         userMapper.addUser(user);
     }
 
-    public User selectById(int id) {
-        return userMapper.selectById(id);
-    }
-
     public void updateUser(User user) {
         userMapper.updateUser(user);
     }
@@ -54,7 +52,8 @@ public class UserService {
         return userMapper.selectAll();
     }
 //TODO:返回一个DTO,用户基本信息
-    public User login(String username, String password)  {
+    public String login(String username, String password)  {
+
         User dbUser = userMapper.selectByUserName(username);
         if (dbUser == null) {
             throw new ServiceException("账号不存在");
@@ -78,9 +77,12 @@ public class UserService {
         dbUser.setPermissions(permissionsSet);
 
         String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
-        dbUser.setToken(token);
-        return dbUser;
+
+
+        return token;
+
     }
+
 
     public User register(User user) {
 
@@ -114,17 +116,17 @@ public class UserService {
     public void updatePassword(User user) {
         userMapper.updatePassword(user);
     }
-    public List<UserVO> findAllUsers(){
+    public List<UserDto> findAllUsers(){
         List<User> users = userMapper.selectAll();
-        List<UserVO> userVOS = new ArrayList<>();
+        List<UserDto> UserDtos = new ArrayList<>();
 
         for (User user : users) {
-            UserVO userVO = new UserVO();
-            userVO.setUserId(user.getId());
-            userVO.setUsername(user.getUsername());
-            userVO.setGrade(user.getGrade());
-            userVO.setGroup(user.getGroup());
-            userVO.setRoles(new ArrayList<>());
+            UserDto UserDto = new UserDto();
+            UserDto.setUserId(user.getId());
+            UserDto.setUsername(user.getUsername());
+            UserDto.setGrade(user.getGrade());
+            UserDto.setGroup(user.getGroup());
+            UserDto.setRoles(new ArrayList<>());
             Integer id = user.getId();
             List<UserRole> userRoles = roleMapper.selectRolesById(id);
             for (UserRole userRole : userRoles) {
@@ -132,11 +134,31 @@ public class UserService {
                 // 获取一个角色的名称列表
                 List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
                 // 累加角色名称到用户的角色列表中
-                userVO.getRoles().addAll(roleNameList);
+                UserDto.getRoles().addAll(roleNameList);
             }
-            userVOS.add(userVO);
+            UserDtos.add(UserDto);
         }
-        return userVOS;
+        return UserDtos;
     }
+    public UserDto findUser(Integer id) {
 
+        UserDto UserDto = new UserDto();
+        User user = userMapper.selectById(id);
+        UserDto.setUserId(user.getId());
+        UserDto.setUsername(user.getUsername());
+        UserDto.setGrade(user.getGrade());
+        UserDto.setGroup(user.getGroup());
+        UserDto.setRoles(new ArrayList<>());
+        List<UserRole> userRoles = roleMapper.selectRolesById(id);
+        for (UserRole userRole : userRoles) {
+            Integer roleId = userRole.getRoleId();
+            // 获取一个角色的名称列表
+            List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
+            // 累加角色名称到用户的角色列表中
+            UserDto.getRoles().addAll(roleNameList);
+        }
+
+
+        return UserDto;
+    }
 }

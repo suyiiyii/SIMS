@@ -14,8 +14,9 @@ import java.util.List;
  */
 @Data
 public class UserDto {
-    private Long userId;
+    private Integer userId;
     private String username;
+    private String grade;
+    private String group;
     private List<String> roles; // 角色名称列表
-    private List<String> permissions; // 权限列表
 }
