@@ -2,7 +2,6 @@ package top.suyiiyii.sims.service;
 
 
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +73,6 @@ public class UserService {
                 permissionsSet.add(permissions);
             }
         }
-        dbUser.setPermissions(permissionsSet);
 
         String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
 
@@ -103,7 +101,7 @@ public class UserService {
         if (user.getEmail() == null || user.getEmail().equals("")) {
             throw new ServiceException("邮箱不能为空");
         }
-        if (user.getGroup() == null || user.getGroup().equals("")) {
+        if (user.getUserGroup() == null || user.getUserGroup().equals("")) {
             throw new ServiceException("组别不能为空");
         }
 
@@ -125,7 +123,7 @@ public class UserService {
             UserDto.setUserId(user.getId());
             UserDto.setUsername(user.getUsername());
             UserDto.setGrade(user.getGrade());
-            UserDto.setGroup(user.getGroup());
+            UserDto.setGroup(user.getUserGroup());
             UserDto.setRoles(new ArrayList<>());
             Integer id = user.getId();
             List<UserRole> userRoles = roleMapper.selectRolesById(id);
@@ -147,7 +145,7 @@ public class UserService {
         UserDto.setUserId(user.getId());
         UserDto.setUsername(user.getUsername());
         UserDto.setGrade(user.getGrade());
-        UserDto.setGroup(user.getGroup());
+        UserDto.setGroup(user.getUserGroup());
         UserDto.setRoles(new ArrayList<>());
         List<UserRole> userRoles = roleMapper.selectRolesById(id);
         for (UserRole userRole : userRoles) {

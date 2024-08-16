@@ -78,7 +78,7 @@ public class UserController {
         user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
         user.setGrade(request.getGrade());
-        user.setGroup(request.getGroup());
+        user.setUserGroup(request.getGroup());
         userService.register(user);
 
         return Result.success(CommonResponse.factory("注册成功"));

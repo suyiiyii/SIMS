@@ -1,13 +1,10 @@
 package top.suyiiyii.sims.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 /**
  * @Author tortoise
@@ -29,9 +26,5 @@ public class User {
     private String password;
     private String email;
     private String grade;
-    private String group;
-    @TableField(exist = false)
-    private String token;
-    @TableField(exist = false)
-    private Set<Permissions> permissions;
+    private String userGroup;
 }
