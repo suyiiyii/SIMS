@@ -1,13 +1,11 @@
 package top.suyiiyii.sims.controller;
 
 import cn.hutool.core.util.StrUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.session.Session;
-import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
@@ -39,8 +37,6 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
-    private  SessionRepository sessionRepository;
-
 
     @AuthAccess
     @GetMapping("/")
@@ -63,7 +59,7 @@ public class UserController {
             return Result.error("用户名或密码错误");
         }
         LoginResponse response = new LoginResponse();
-            response.setToken(token);
+        response.setToken(token);
         return Result.success(response);
     }
 
@@ -88,6 +84,7 @@ public class UserController {
         return Result.success(CommonResponse.factory("注册成功"));
     }
 
+    @Operation(description = "删除单个用户")
     @DeleteMapping("/admin/user/{id}")
     public Result<CommonResponse> adminDelete(@PathVariable Integer id) {
         log.info("delete request:{}", id);
@@ -95,15 +92,25 @@ public class UserController {
         return Result.success(CommonResponse.factory("删除成功"));
     }
 
+    @Operation(description = "获取所有用户信息")
     @GetMapping("/admin/user")
-    public Result<List<UserDto>> adminGetById() {
+    public Result<List<UserDto>> adminGet() {
         List<UserDto> allUsers = userService.findAllUsers();
         return Result.success(allUsers);
     }
-    @GetMapping("/user/{id}")
-    public Result<UserDto> GetById(@PathVariable Integer id) {
+
+    @Operation(description = "根据 id 获取用户信息")
+    @GetMapping("/admin/user/{id}")
+    public Result<UserDto> adminGetById(@PathVariable Integer id) {
         log.info("selectById request:{}", id);
         UserDto user = userService.findUser(id);
+        return Result.success(user);
+    }
+
+    @Operation(description = "获取当前用户信息")
+    @GetMapping("/user/me")
+    public Result<UserDto> getSelf() {
+        UserDto user = userService.findUser(0);
         return Result.success(user);
     }
 
