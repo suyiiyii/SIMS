@@ -62,10 +62,10 @@ public class UserService {
         }
         HashSet<Permissions> permissionsSet = new HashSet<>();
         Integer id = dbUser.getId();
-        List<UserRole> UserRoles = roleMapper.selectRolesById(id);
-        for (UserRole userRole : UserRoles) {
+        List<Role> roles = roleMapper.selectRolesById(id);
+        for (Role role : roles) {
             //根据roleid找所有permissionId
-            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(userRole.getRoleId());
+            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(role.getRoleId());
             for (RolePermission rolePermission : rolePerminsion) {
                 Integer permissionId = rolePermission.getPermissionId();
                 //根据permissionId找permission
@@ -126,9 +126,9 @@ public class UserService {
             UserDto.setGroup(user.getUserGroup());
             UserDto.setRoles(new ArrayList<>());
             Integer id = user.getId();
-            List<UserRole> userRoles = roleMapper.selectRolesById(id);
-            for (UserRole userRole : userRoles) {
-                Integer roleId = userRole.getRoleId();
+            List<Role> roles = roleMapper.selectRolesById(id);
+            for (Role role : roles) {
+                Integer roleId = role.getRoleId();
                 // 获取一个角色的名称列表
                 List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
                 // 累加角色名称到用户的角色列表中
@@ -147,9 +147,9 @@ public class UserService {
         UserDto.setGrade(user.getGrade());
         UserDto.setGroup(user.getUserGroup());
         UserDto.setRoles(new ArrayList<>());
-        List<UserRole> userRoles = roleMapper.selectRolesById(id);
-        for (UserRole userRole : userRoles) {
-            Integer roleId = userRole.getRoleId();
+        List<Role> roles = roleMapper.selectRolesById(id);
+        for (Role role : roles) {
+            Integer roleId = role.getRoleId();
             // 获取一个角色的名称列表
             List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
             // 累加角色名称到用户的角色列表中

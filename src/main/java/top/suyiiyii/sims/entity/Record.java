@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @Author tortoise
  * @Date 2024/8/9 14:04
  * @PackageName:top.suyiiyii.sims.entity
- * @ClassName: Record
+ * @ClassName: RecordMapper
  * @Description: TODO
  * @Version 1.0
  */
@@ -24,9 +24,8 @@ public class Record {
     @TableId("id")
     private Integer id;
     // 用户ID
-    private Integer userId;
-    // 奖惩类型
-    private String type;
+    private Integer StudentId;
+
     // 奖惩类别ID
     private Integer categoryId;
     // 奖惩日期

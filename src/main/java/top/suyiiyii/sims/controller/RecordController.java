@@ -1,22 +1,78 @@
 package top.suyiiyii.sims.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
+import top.suyiiyii.sims.entity.Record;
+import top.suyiiyii.sims.entity.Role;
+import top.suyiiyii.sims.entity.User;
+import top.suyiiyii.sims.entity.UserRole;
+import top.suyiiyii.sims.mapper.CategoryMapper;
+import top.suyiiyii.sims.mapper.UserMapper;
+import top.suyiiyii.sims.service.CategoryService;
+import top.suyiiyii.sims.service.RecordService;
+import top.suyiiyii.sims.service.RoleService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class RecordController {
-
+public class
+RecordController {
+    @Autowired
+    RecordService recordService;
+    @Autowired
+    UserMapper userMapper;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    CategoryService categoryService;
 
     @Operation(summary = "获取所有奖惩记录")
     @GetMapping("/admin/record")
     public Result<List<RecordDto>> adminRecord(Integer page, Integer size) {
-        return Result.success(new ArrayList<>());
+        List<RecordDto> recordDtos=new ArrayList<>();
+        List<Record> records = recordService.getAllRecords(page, size);
+        for (Record record : records) {
+            RecordDto recordDto = new RecordDto();
+            Integer studentId=record.getStudentId();
+            recordDto.setStudentId(studentId);
+            User user = userMapper.selectByUserId(studentId);
+            recordDto.setName(user.getUsername());
+            recordDto.setGrade(user.getGrade());
+            recordDto.setGroup(user.getUserGroup());
+            List<Role> roles = roleService.selectRolesById(studentId);
+            ArrayList<String> roleName = new ArrayList<>();
+            for (Role role : roles) {
+                roleName.add(role.getRoleName());
+            }
+            recordDto.setRoles(roleName);
+            categoryService.getCategoryName(record.getCategoryId());
+            categoryService.getsubCategoryName(record.getCategoryId());
+            recordDto.setDate(record.getDate());
+            recordDto.setContent(record.getContent());
+            recordDto.setReason(record.getReason());
+            recordDto.setContent(record.getContent());
+            recordDto.setAmount(record.getAmount());
+            recordDto.setRemark(record.getRemark());
+            recordDto.setIsRevoked(record.getIsRevoked());
+            // 撤销日期
+            recordDto.setRevokeDate(record.getRevokeDate());
+            recordDto.setRevokeReason(record.getRevokeReason());
+            recordDto.setRevokeRemark(record.getRevokeRemark());
+            recordDto.setOperatorUserId(record.getOperatorUserId());
+            recordDto.setLastUpdateTime(record.getLastUpdateTime());
+            recordDtos.add(recordDto);
+        }
+
+
+        return Result.success(recordDtos);
     }
 
     @Operation(summary = "获取自己的奖惩记录")

@@ -41,7 +41,7 @@ public class RoleService {
      * @param Id
      * @return: java.util.List<top.suyiiyii.sims.entity.Role>
      */
-    List<UserRole> selectRolesById(int id){
+    public List<Role> selectRolesById(int id){
         return roleMapper.selectRolesById(id);
     }
 
