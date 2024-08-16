@@ -49,7 +49,7 @@ RecordController {
             recordDto.setStudentId(studentId);
             User user = UserService.selectByUserId(studentId);
             recordDto.setName(user.getUsername());
-            recordDto.setGrade(user.getGrade());
+            recordDto.setGrade(user.getUserGroup());
             recordDto.setGroup(user.getUserGroup());
             List<Role> roles = UserService.selectRolesById(studentId);
             ArrayList<String> roleName = new ArrayList<>();
@@ -57,8 +57,8 @@ RecordController {
                 roleName.add(role.getRoleName());
             }
             recordDto.setRoles(roleName);
-            categoryService.getCategoryName(record.getCategoryId());
-            categoryService.getsubCategoryName(record.getCategoryId());
+            recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDto.setDate(record.getDate());
             recordDto.setContent(record.getContent());
             recordDto.setReason(record.getReason());
