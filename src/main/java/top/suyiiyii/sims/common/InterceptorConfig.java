@@ -22,7 +22,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 //                    .excludePathPatterns("/user/login") // 排除不需要验证的路径
 //                    .excludePathPatterns("/user/register")
 //                    .excludePathPatterns("/v3/api-docs/**");
-
             super.addInterceptors(registry);
         }
 

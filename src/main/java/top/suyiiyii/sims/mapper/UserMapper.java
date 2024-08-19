@@ -43,6 +43,7 @@ public interface UserMapper extends BaseMapper<User> {
             "username = #{username}, " +
             "name = #{name}, " +
             "email = #{email}, " +
+            "grade = #{grade}, " +
             "userGroup = #{group} " +
             "WHERE id = #{id}")
     int updateUser(User user);
@@ -52,7 +53,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
-    @Select("SELECT id, student_id, username, password, name, email,user_group from user WHERE id = #{id}")
+    @Select("SELECT id, student_id, username, password, name, email,grade,user_group from user WHERE student_id = #{id}")
     User selectByUserId(Integer id);
 
     /**
@@ -73,5 +74,6 @@ public interface UserMapper extends BaseMapper<User> {
    User selectByUserName(@Param("username") String username);
 @Update("update user set password = #{password} where username = #{username}")
     void updatePassword(User user);
-
+@Select("select student_id from user where id = #{userId}")
+    String getStudentIdById(String userId);
 }

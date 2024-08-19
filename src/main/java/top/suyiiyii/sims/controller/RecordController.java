@@ -1,7 +1,11 @@
 package top.suyiiyii.sims.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.v3.oas.annotations.Operation;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,7 @@ import top.suyiiyii.sims.service.CategoryService;
 import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
+import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,8 +86,47 @@ RecordController {
 
     @Operation(summary = "获取自己的奖惩记录")
     @GetMapping("/record")
-    public Result<List<RecordDto>> record(Integer page, Integer size) {
-        return Result.success(new ArrayList<>());
+    public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size,
+                                          HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String userId= JwtUtils.extractUserId(token);
+        List<RecordDto> recordDtos=new ArrayList<>();
+
+        List<Record> records = recordService.getMyAllRecords(page, size,userId);
+        for (Record record : records) {
+            RecordDto recordDto = new RecordDto();
+            Integer studentId=record.getStudentId();
+            recordDto.setStudentId(studentId);
+            User user = UserService.selectByUserId(studentId);
+            recordDto.setName(user.getUsername());
+            recordDto.setGrade(user.getGrade());
+            recordDto.setGroup(user.getUserGroup());
+            List<Role> roles = UserService.selectRolesById(user.getId());
+            ArrayList<String> roleName = new ArrayList<>();
+            for (Role role : roles) {
+                roleName.add(role.getRoleName());
+            }
+
+            recordDto.setRoles(roleName);
+            recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
+            recordDto.setDate(record.getDate());
+            recordDto.setContent(record.getContent());
+            recordDto.setReason(record.getReason());
+            recordDto.setAmount(record.getAmount());
+            recordDto.setRemark(record.getRemark());
+            recordDto.setIsRevoked(record.getIsRevoked());
+            // 撤销日期
+            recordDto.setRevokeDate(record.getRevokeDate());
+            recordDto.setRevokeReason(record.getRevokeReason());
+            recordDto.setRevokeRemark(record.getRevokeRemark());
+            recordDto.setOperatorUserId(record.getOperatorUserId());
+            recordDto.setLastUpdateTime(record.getLastUpdateTime());
+            recordDtos.add(recordDto);
+        }
+        return Result.success(recordDtos);
+
     }
 
     @Operation(summary = "更新单个奖惩记录")

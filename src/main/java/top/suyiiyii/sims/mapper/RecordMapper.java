@@ -21,4 +21,7 @@ public interface RecordMapper {
     //分页查询
 @Select("select * from record limit #{page},#{size}")
     List<Record> getAllRecords(Integer page, Integer size);
+//根据学号分页查询所以信息
+    @Select("select * from record where student_id = #{id} limit #{page},#{size}")
+    List<Record> getMyAllRecords(Integer page, Integer size, String id);
 }
