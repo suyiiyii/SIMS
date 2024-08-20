@@ -36,4 +36,16 @@ public class RecordService {
         String studentId = userMapper.getStudentIdById(userId);
         return recordMapper.getMyAllRecords(page, size, studentId);
     }
+
+    public void updateRecord(Record record, Integer id) {
+        recordMapper.updateRecord(record, id);
+    }
+
+    public void deleteRecord(Integer id) {
+        recordMapper.deleteRecord(id);
+    }
+
+    public void addRecord(Record record) {
+        recordMapper.addRecord(record);
+    }
 }

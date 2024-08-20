@@ -25,4 +25,10 @@ public class CategoryService {
     public String getsubCategoryName(Integer categoryId) {
         return categoryMapper.getSubCategoryName(categoryId);
     }
+
+
+    public Integer getIdBySubCategoryName(String subCategoryName) {
+        return categoryMapper.getIdBySubCategoryName(subCategoryName);
+
+    }
 }

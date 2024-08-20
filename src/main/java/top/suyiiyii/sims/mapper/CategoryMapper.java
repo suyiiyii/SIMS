@@ -17,6 +17,7 @@ public interface CategoryMapper {
     String getCategoryName(Integer categoryId);
 
     @Select("SELECT category_name FROM reward_punishment_category WHERE category_id=#{categoryId}")
-
         String getSubCategoryName(Integer categoryId);
+@Select("SELECT category_id FROM reward_punishment_category WHERE sub_category_name=#{subCategoryName}")
+    Integer getIdBySubCategoryName(String subCategoryName);
 }

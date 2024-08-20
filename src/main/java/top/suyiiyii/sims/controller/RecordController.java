@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.v3.oas.annotations.Operation;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import top.suyiiyii.sims.utils.JwtUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class
@@ -39,48 +41,23 @@ RecordController {
     RoleService roleService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ModelMapper modelMapper;
 
     @Operation(summary = "获取所有奖惩记录")
     @GetMapping("/admin/record")
     public Result<List<RecordDto>> adminRecord(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<RecordDto> recordDtos=new ArrayList<>();
-
         List<Record> records = recordService.getAllRecords(page, size);
+        List<RecordDto> recordDtos = new ArrayList<>();
         for (Record record : records) {
-            RecordDto recordDto = new RecordDto();
-            Integer studentId=record.getStudentId();
-            recordDto.setStudentId(studentId);
-            User user = UserService.selectByUserId(studentId);
-            recordDto.setName(user.getUsername());
-            recordDto.setGrade(user.getUserGroup());
-            recordDto.setGroup(user.getUserGroup());
-            List<Role> roles = UserService.selectRolesById(studentId);
-            ArrayList<String> roleName = new ArrayList<>();
-            for (Role role : roles) {
-                roleName.add(role.getRoleName());
-            }
-            recordDto.setRoles(roleName);
+
+            RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
-            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
-            recordDto.setDate(record.getDate());
-            recordDto.setContent(record.getContent());
-            recordDto.setReason(record.getReason());
-            recordDto.setContent(record.getContent());
-            recordDto.setAmount(record.getAmount());
-            recordDto.setRemark(record.getRemark());
-            recordDto.setIsRevoked(record.getIsRevoked());
-            // 撤销日期
-            recordDto.setRevokeDate(record.getRevokeDate());
-            recordDto.setRevokeReason(record.getRevokeReason());
-            recordDto.setRevokeRemark(record.getRevokeRemark());
-            recordDto.setOperatorUserId(record.getOperatorUserId());
-            recordDto.setLastUpdateTime(record.getLastUpdateTime());
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName( record.getCategoryId()));
             recordDtos.add(recordDto);
         }
-
-
         return Result.success(recordDtos);
     }
 
@@ -95,34 +72,12 @@ RecordController {
 
         List<Record> records = recordService.getMyAllRecords(page, size,userId);
         for (Record record : records) {
-            RecordDto recordDto = new RecordDto();
-            Integer studentId=record.getStudentId();
-            recordDto.setStudentId(studentId);
-            User user = UserService.selectByUserId(studentId);
-            recordDto.setName(user.getUsername());
-            recordDto.setGrade(user.getGrade());
-            recordDto.setGroup(user.getUserGroup());
-            List<Role> roles = UserService.selectRolesById(user.getId());
-            ArrayList<String> roleName = new ArrayList<>();
-            for (Role role : roles) {
-                roleName.add(role.getRoleName());
-            }
 
-            recordDto.setRoles(roleName);
+            RecordDto recordDto = modelMapper.map(record, RecordDto.class);
+
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
-            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
-            recordDto.setDate(record.getDate());
-            recordDto.setContent(record.getContent());
-            recordDto.setReason(record.getReason());
-            recordDto.setAmount(record.getAmount());
-            recordDto.setRemark(record.getRemark());
-            recordDto.setIsRevoked(record.getIsRevoked());
-            // 撤销日期
-            recordDto.setRevokeDate(record.getRevokeDate());
-            recordDto.setRevokeReason(record.getRevokeReason());
-            recordDto.setRevokeRemark(record.getRevokeRemark());
-            recordDto.setOperatorUserId(record.getOperatorUserId());
-            recordDto.setLastUpdateTime(record.getLastUpdateTime());
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName( record.getCategoryId()));
+
             recordDtos.add(recordDto);
         }
         return Result.success(recordDtos);
@@ -132,14 +87,15 @@ RecordController {
     @Operation(summary = "更新单个奖惩记录")
     @PutMapping("/admin/record/{id}")
     public Result<CommonResponse> adminUpdateRecord(@PathVariable Integer id, @RequestBody RecordDto recordDto) {
-
+        Record record = modelMapper.map(recordDto, Record.class);
+        recordService.updateRecord(record,id);
         return Result.msg("修改成功");
     }
 
     @Operation(summary = "删除单个奖惩记录")
     @DeleteMapping("/admin/record/{id}")
     public Result<CommonResponse> adminDeleteRecord(@PathVariable Integer id) {
-
+        recordService.deleteRecord(id);
         return Result.msg("删除成功");
     }
 
@@ -147,9 +103,14 @@ RecordController {
     @Operation(summary = "添加奖惩记录")
     @PostMapping("/admin/record")
     public Result<CommonResponse> adminAddRecord(@RequestBody RecordDto recordDto) {
-
+        Integer categoryId = categoryService.getIdBySubCategoryName(recordDto.getSubCategoryName());
+        Record record = modelMapper.map(recordDto, Record.class);
+        if (categoryId == null) {
+            Result.error("请选择奖惩类别，以及类型");
+        }
+        record.setCategoryId(categoryId);
+        recordService.addRecord(record);
         return Result.msg("添加成功");
     }
-
 
 }
