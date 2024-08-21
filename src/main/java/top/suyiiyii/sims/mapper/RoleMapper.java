@@ -51,8 +51,10 @@ public interface RoleMapper {
             "FROM role " +
             "WHERE role_id IN " +
             "(SELECT role_id FROM user_role WHERE user_id = #{user_id})")
-    List<UserRole> selectRolesById(@Param("user_id") int id);
+    List<Role> selectRolesById(@Param("user_id") int id);
 
 @Select("SELECT role_name FROM role WHERE role_id=#{roleId}")
     List<String> selectRoleNamesByRoleId(Integer roleId);
+
+
 }

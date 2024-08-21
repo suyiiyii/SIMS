@@ -22,15 +22,7 @@ import java.util.List;
 public class RoleService {
     @Autowired
     RoleMapper roleMapper;
-    public void addRole(String name){
-        roleMapper.addRole(name);
-    }
-    public void deleteRole(String name){
-        roleMapper.deleteRole(name);
-    }
-    public void updateRole(String name,String newName){
-        roleMapper.updateRole(name,newName);
-    }
+
     public List<User> findAllUsersWithRoles(){
         return roleMapper.selectAllUsersWithRoles();
     }
@@ -41,9 +33,20 @@ public class RoleService {
      * @param Id
      * @return: java.util.List<top.suyiiyii.sims.entity.Role>
      */
-    List<UserRole> selectRolesById(int id){
+    public List<Role> selectRolesById(int id){
         return roleMapper.selectRolesById(id);
     }
 
 
+
+
+    public boolean isRoleNameAdmin(Integer id) {
+        List<Role> roles = roleMapper.selectRolesById(id);
+        for (Role role : roles) {
+            if (role.getRoleName().equals("admin")) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

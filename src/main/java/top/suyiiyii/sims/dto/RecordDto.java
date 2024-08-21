@@ -5,20 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordDto {
-    private Integer id;
+
     // 用户ID
-    private Integer userId;
-    // 奖惩类型
-    private String type;
-    // 奖惩类别ID
-    private Integer categoryId;
+    private Integer studentId;
+
+
+    private String categoryName;
+
+    private String subCategoryName;
     // 奖惩日期
-    private LocalDateTime date;
+    private Long date;
     // 奖惩内容
     private String content;
     // 奖惩原因
@@ -30,7 +32,7 @@ public class RecordDto {
     // 是否撤销
     private Boolean isRevoked;
     // 撤销日期
-    private LocalDateTime revokeDate;
+    private Long revokeDate;
     // 撤销原因
     private String revokeReason;
     // 撤销备注
@@ -38,5 +40,5 @@ public class RecordDto {
     // 操作人ID
     private Integer operatorUserId;
     // 最近一次更新时间
-    private LocalDateTime lastUpdateTime;
+    private Long lastUpdateTime;
 }

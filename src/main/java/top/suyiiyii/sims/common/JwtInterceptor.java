@@ -42,10 +42,6 @@ public class JwtInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-
-   //     request.setAttribute();
-   //     request.getAttribute()
-
         // 执行认证
         if (StrUtil.isBlank(token)) {
             //权限错误
@@ -65,6 +61,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (!JwtUtils.verifyToken(token, user.getPassword())) {
             throw new ServiceException("401", "请登录");
         }
+        // 验证token后，如果一切正常，将token存储到request的属性中
+        request.setAttribute("token", token);
         return true;
     }
 }

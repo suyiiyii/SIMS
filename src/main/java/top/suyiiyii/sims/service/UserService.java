@@ -5,7 +5,8 @@ package top.suyiiyii.sims.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import top.suyiiyii.sims.VO.UserVO;
+
+import top.suyiiyii.sims.dto.UserDto;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.PermissionsMapper;
@@ -38,10 +39,6 @@ public class UserService {
         userMapper.addUser(user);
     }
 
-    public User selectById(int id) {
-        return userMapper.selectById(id);
-    }
-
     public void updateUser(User user) {
         userMapper.updateUser(user);
     }
@@ -54,7 +51,8 @@ public class UserService {
         return userMapper.selectAll();
     }
 //TODO:返回一个DTO,用户基本信息
-    public User login(String username, String password)  {
+    public String login(String username, String password)  {
+
         User dbUser = userMapper.selectByUserName(username);
         if (dbUser == null) {
             throw new ServiceException("账号不存在");
@@ -64,10 +62,10 @@ public class UserService {
         }
         HashSet<Permissions> permissionsSet = new HashSet<>();
         Integer id = dbUser.getId();
-        List<UserRole> UserRoles = roleMapper.selectRolesById(id);
-        for (UserRole userRole : UserRoles) {
+        List<Role> roles = roleMapper.selectRolesById(id);
+        for (Role role : roles) {
             //根据roleid找所有permissionId
-            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(userRole.getRoleId());
+            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(role.getRoleId());
             for (RolePermission rolePermission : rolePerminsion) {
                 Integer permissionId = rolePermission.getPermissionId();
                 //根据permissionId找permission
@@ -75,12 +73,14 @@ public class UserService {
                 permissionsSet.add(permissions);
             }
         }
-        dbUser.setPermissions(permissionsSet);
 
         String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
-        dbUser.setToken(token);
-        return dbUser;
+
+
+        return token;
+
     }
+
 
     public User register(User user) {
 
@@ -101,7 +101,7 @@ public class UserService {
         if (user.getEmail() == null || user.getEmail().equals("")) {
             throw new ServiceException("邮箱不能为空");
         }
-        if (user.getGroup() == null || user.getGroup().equals("")) {
+        if (user.getUserGroup() == null || user.getUserGroup().equals("")) {
             throw new ServiceException("组别不能为空");
         }
 
@@ -114,29 +114,57 @@ public class UserService {
     public void updatePassword(User user) {
         userMapper.updatePassword(user);
     }
-    public List<UserVO> findAllUsers(){
+    public List<UserDto> findAllUsers(){
         List<User> users = userMapper.selectAll();
-        List<UserVO> userVOS = new ArrayList<>();
+        List<UserDto> UserDtos = new ArrayList<>();
 
         for (User user : users) {
-            UserVO userVO = new UserVO();
-            userVO.setUserId(user.getId());
-            userVO.setUsername(user.getUsername());
-            userVO.setGrade(user.getGrade());
-            userVO.setGroup(user.getGroup());
-            userVO.setRoles(new ArrayList<>());
+            UserDto UserDto = new UserDto();
+            UserDto.setUserId(user.getId());
+            UserDto.setUsername(user.getUsername());
+            UserDto.setGrade(user.getGrade());
+            UserDto.setUserGroup(user.getUserGroup());
+            UserDto.setRoles(new ArrayList<>());
             Integer id = user.getId();
-            List<UserRole> userRoles = roleMapper.selectRolesById(id);
-            for (UserRole userRole : userRoles) {
-                Integer roleId = userRole.getRoleId();
+            List<Role> roles = roleMapper.selectRolesById(id);
+            for (Role role : roles) {
+                Integer roleId = role.getRoleId();
                 // 获取一个角色的名称列表
                 List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
                 // 累加角色名称到用户的角色列表中
-                userVO.getRoles().addAll(roleNameList);
+                UserDto.getRoles().addAll(roleNameList);
             }
-            userVOS.add(userVO);
+            UserDtos.add(UserDto);
         }
-        return userVOS;
+        return UserDtos;
+    }
+    public UserDto findUser(Integer id) {
+
+        UserDto UserDto = new UserDto();
+        User user = userMapper.selectById(id);
+        UserDto.setUserId(user.getId());
+        UserDto.setUsername(user.getUsername());
+        UserDto.setGrade(user.getGrade());
+        UserDto.setUserGroup(user.getUserGroup());
+        UserDto.setRoles(new ArrayList<>());
+        List<Role> roles = roleMapper.selectRolesById(id);
+        for (Role role : roles) {
+            Integer roleId = role.getRoleId();
+            // 获取一个角色的名称列表
+            List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
+            // 累加角色名称到用户的角色列表中
+            UserDto.getRoles().addAll(roleNameList);
+        }
+
+
+        return UserDto;
     }
 
+    public User selectByUserId(Integer studentId) {
+        return userMapper.selectByUserId(studentId);
+    }
+
+    public List<Role> selectRolesById(Integer studentId) {
+        return roleMapper.selectRolesById(studentId);
+    }
 }

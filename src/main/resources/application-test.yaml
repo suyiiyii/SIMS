@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:test.db:testdb?cache=shared
+    driver-class-name: org.sqlite.JDBC
+    username:
+    password:
+
+

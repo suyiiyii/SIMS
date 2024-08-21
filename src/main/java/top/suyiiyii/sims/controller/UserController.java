@@ -1,6 +1,8 @@
 package top.suyiiyii.sims.controller;
 
 import cn.hutool.core.util.StrUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
+import top.suyiiyii.sims.dto.UserDto;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
+
+import java.util.List;
 
 
 /**
@@ -32,6 +37,7 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
+
     @AuthAccess
     @GetMapping("/")
     public Result hello() {
@@ -41,17 +47,20 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public Result<LoginResponse> login(@RequestBody LoginRequest request) {
+    public Result<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         log.info("login request:{}", request);
 
         if (StrUtil.isBlank(request.getUsername()) || StrUtil.isBlank(request.getPassword())) {
 
             return Result.error("用户名或密码不能为空");
         }
-
-        User user = userService.login(request.getUsername(), request.getPassword());
-
-        return Result.success(new LoginResponse());
+        String token = userService.login(request.getUsername(), request.getPassword());
+        if (token == null) {
+            return Result.error("用户名或密码错误");
+        }
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        return Result.success(response);
     }
 
     @PostMapping("/user/register")
@@ -64,26 +73,46 @@ public class UserController {
         if (request.getPassword() == null || request.getPassword().length() < 3) {
             throw new ServiceException("密码长度不能小于3位");
         }
-
-        userService.register(new User());
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        user.setGrade(request.getGrade());
+        user.setUserGroup(request.getGroup());
+        userService.register(user);
 
         return Result.success(CommonResponse.factory("注册成功"));
     }
 
+    @Operation(description = "删除单个用户")
     @DeleteMapping("/admin/user/{id}")
     public Result<CommonResponse> adminDelete(@PathVariable Integer id) {
         log.info("delete request:{}", id);
-//        userService.deleteUser(user.getId());
+        userService.deleteUser(id);
         return Result.success(CommonResponse.factory("删除成功"));
     }
 
+    @Operation(description = "获取所有用户信息")
+    @GetMapping("/admin/user")
+    public Result<List<UserDto>> adminGet() {
+        List<UserDto> allUsers = userService.findAllUsers();
+        return Result.success(allUsers);
+    }
+
+    @Operation(description = "根据 id 获取用户信息")
     @GetMapping("/admin/user/{id}")
-    public Result<User> adminGetById(@PathVariable Integer id) {
+    public Result<UserDto> adminGetById(@PathVariable Integer id) {
         log.info("selectById request:{}", id);
-        User user = userService.selectById(id);
+        UserDto user = userService.findUser(id);
         return Result.success(user);
     }
 
+    @Operation(description = "获取当前用户信息")
+    @GetMapping("/user/me")
+    public Result<UserDto> getSelf() {
+        UserDto user = userService.findUser(0);
+        return Result.success(user);
+    }
 
 
     @Data
