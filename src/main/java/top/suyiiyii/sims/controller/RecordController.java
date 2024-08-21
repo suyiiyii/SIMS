@@ -66,7 +66,7 @@ RecordController {
     public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           HttpServletRequest request) {
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        String token = (String) request.getAttribute("token");
         String userId= JwtUtils.extractUserId(token);
         List<RecordDto> recordDtos=new ArrayList<>();
 
@@ -104,6 +104,7 @@ RecordController {
     @PostMapping("/admin/record")
     public Result<CommonResponse> adminAddRecord(@RequestBody RecordDto recordDto) {
         Integer categoryId = categoryService.getIdBySubCategoryName(recordDto.getSubCategoryName());
+
         Record record = modelMapper.map(recordDto, Record.class);
         if (categoryId == null) {
             Result.error("请选择奖惩类别，以及类型");

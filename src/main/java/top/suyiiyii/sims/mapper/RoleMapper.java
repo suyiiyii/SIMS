@@ -55,4 +55,6 @@ public interface RoleMapper {
 
 @Select("SELECT role_name FROM role WHERE role_id=#{roleId}")
     List<String> selectRoleNamesByRoleId(Integer roleId);
+
+
 }
