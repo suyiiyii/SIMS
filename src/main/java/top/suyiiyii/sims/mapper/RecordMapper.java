@@ -1,7 +1,6 @@
 package top.suyiiyii.sims.mapper;
 
 import org.apache.ibatis.annotations.*;
-import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 
 import java.util.List;
@@ -22,7 +21,6 @@ public interface RecordMapper {
 //根据学号分页查询所以信息
     @Select("select * from record where student_id = #{id} limit #{page},#{size}")
     List<Record> getMyAllRecords(Integer page, Integer size, String id);
-
     //根据id，更新对应信息
     @Update("UPDATE record SET "
 
@@ -39,7 +37,6 @@ public interface RecordMapper {
             + "last_update_time = #{record.lastUpdateTime} "
             + "WHERE id = #{id}")
     void updateRecord(Record record, Integer id);
-
     @Delete("delete from record where id = #{id}")
     void deleteRecord(Integer id);
     @Insert({
@@ -49,4 +46,28 @@ public interface RecordMapper {
             "#{revokeDate}, #{revokeReason}, #{revokeRemark}, #{operatorUserId}, #{lastUpdateTime})"
     })
     void addRecord(Record record);
+
+    @Select({
+            "<script>",
+            "SELECT * FROM record WHERE 1=1",
+            "<if test='studentId != null '>",
+            "AND student_id = #{studentId}",
+            "</if>",
+            "<if test='userGroup != null and userGroup.trim() != \"\"'>",
+            "AND user_group LIKE CONCAT('%', #{userGroup}, '%')",
+            "</if>",
+            "<if test='grade != null and grade.trim() != \"\"'>",
+            "AND grade LIKE CONCAT('%', #{grade}, '%')",
+            "</if>",
+            "LIMIT #{size}, #{page}",
+            "</script>"
+    })
+    List<Record> getRecordsLike(
+            @Param("size") int size,
+            @Param("page") int page,
+
+            @Param("studentId") Integer studentId,
+            @Param("userGroup") String userGroup,
+            @Param("grade") String grade
+    );
 }

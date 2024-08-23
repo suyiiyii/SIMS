@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.suyiiyii.sims.common.Result;
+import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
@@ -38,6 +39,7 @@ public class AdminController {
         List<User> users = userService.selectAll();
         return Result.success(users);
     }
+
 }
 /**
  request.setAttribute();lUsers();

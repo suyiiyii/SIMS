@@ -76,4 +76,6 @@ public interface UserMapper extends BaseMapper<User> {
     void updatePassword(User user);
 @Select("select student_id from user where id = #{userId}")
     String getStudentIdById(String userId);
+    @Select("SELECT student_id from user WHERE id = #{id}")
+    Integer selectStudentIdByUserId(Integer id);
 }

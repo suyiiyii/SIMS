@@ -1,10 +1,9 @@
 package top.suyiiyii.sims.service;
 
 
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.suyiiyii.sims.dto.RecordDto;
+
 import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.mapper.RecordMapper;
 import top.suyiiyii.sims.mapper.UserMapper;
@@ -47,5 +46,9 @@ public class RecordService {
 
     public void addRecord(Record record) {
         recordMapper.addRecord(record);
+    }
+
+    public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {
+        return recordMapper.getRecordsLike(page, size, studentId, userGroup,grade);
     }
 }

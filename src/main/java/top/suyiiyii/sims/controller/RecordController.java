@@ -36,7 +36,7 @@ RecordController {
     @Autowired
     RecordService recordService;
     @Autowired
-    UserService UserService;
+    UserService userService;
     @Autowired
     RoleService roleService;
     @Autowired
@@ -72,12 +72,9 @@ RecordController {
 
         List<Record> records = recordService.getMyAllRecords(page, size,userId);
         for (Record record : records) {
-
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
-
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
             recordDto.setSubCategoryName(categoryService.getsubCategoryName( record.getCategoryId()));
-
             recordDtos.add(recordDto);
         }
         return Result.success(recordDtos);
@@ -112,6 +109,32 @@ RecordController {
         record.setCategoryId(categoryId);
         recordService.addRecord(record);
         return Result.msg("添加成功");
+    }
+    @Operation(summary = "模糊查询奖惩记录")
+    @GetMapping("/admin/likeRecords")
+    public Result<List<RecordDto>> searchRecords(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            String username,Integer studentId, String userGroup, String grade,String roleName) {
+        Integer s1=studentId;
+        if(roleName!="") {
+            //rolename查用户id
+            Integer userId = roleService.getIdByrolename(roleName);
+            //  用户id查记录
+            s1 = userService.selectStudentIdByUserId(userId);
+        }
+        if(username!="") {
+            //username查用户StudentId
+            s1= roleService.getStudentIdByUsername(username);
+        }
+        List<Record> records=recordService.getRecordsLike(page,size,s1,userGroup,grade);
+        List<RecordDto> RecordDtos = new ArrayList<>();
+        for (Record record : records) {
+            RecordDto RecordDto = modelMapper.map(record, RecordDto.class);
+            RecordDtos.add(RecordDto);
+        }
+        return Result.success(RecordDtos);
+
     }
 
 }

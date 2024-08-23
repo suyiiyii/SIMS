@@ -49,4 +49,12 @@ public class RoleService {
         }
         return false;
     }
+
+    public Integer getIdByrolename(String roleName) {
+        return roleMapper.getIdByrolename(roleName);
+    }
+
+    public Integer getStudentIdByUsername(String username) {
+        return roleMapper.getStudentIdByUsername(username);
+    }
 }
