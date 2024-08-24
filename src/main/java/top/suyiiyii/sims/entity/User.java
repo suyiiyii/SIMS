@@ -1,6 +1,8 @@
 package top.suyiiyii.sims.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.tangzc.mpe.autotable.annotation.Column;
+import com.tangzc.mpe.autotable.annotation.ColumnId;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,12 +21,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @TableId("id")
+    @ColumnId(mode = IdType.AUTO,comment = "id主键")
     private Integer id;
+    @Column(comment = "学生id",notNull = true)
     private Integer studentId;
+    @Column(comment = "用户名",notNull = true)
     private String username;
+    @Column(comment = "密码",notNull = true)
     private String password;
+    @Column(comment = "邮箱",notNull = true)
     private String email;
+    @Column(comment = "年级",notNull = true)
     private String grade;
+    @Column(comment = "用户所属团队",notNull = true)
     private String userGroup;
 }
