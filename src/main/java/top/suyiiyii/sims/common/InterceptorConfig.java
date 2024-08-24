@@ -3,13 +3,11 @@ package top.suyiiyii.sims.common;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import top.suyiiyii.sims.service.RoleService;
-import top.suyiiyii.sims.service.UserService;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 /**
@@ -20,32 +18,29 @@ import top.suyiiyii.sims.utils.JwtUtils;
  * @Description: TODO 拦截器配置
  * @Version 1.0
  */
-    @Configuration
-    public class InterceptorConfig extends WebMvcConfigurationSupport {
+@Configuration
+public class InterceptorConfig extends WebMvcConfigurationSupport {
     @Autowired
-    private  RoleService roleService;
+    private RoleService roleService;
 
 
+    @Autowired
+    private JwtInterceptor jwtInterceptor;
 
-    //UserService userService;
-        @Override
-        protected void addInterceptors(InterceptorRegistry registry) {
-           registry.addInterceptor(jwtInterceptor())
-                   .addPathPatterns("/**")
-                   .excludePathPatterns("/user/login") // 排除不需要验证的路径
-                   .excludePathPatterns("/user/register")
-                   .excludePathPatterns("/v3/api-docs/**");
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/user/login") // 排除不需要验证的路径
+                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/v3/api-docs/**");
 
-            // 注册AdminInterceptor，只拦截以admin/开头的路径
-            registry.addInterceptor(new AdminInterceptor())
-                    .addPathPatterns("/admin/**");
-            super.addInterceptors(registry);
-        }
+        // 注册AdminInterceptor，只拦截以admin/开头的路径
+        registry.addInterceptor(new AdminInterceptor())
+                .addPathPatterns("/admin/**");
+        super.addInterceptors(registry);
+    }
 
-        @Bean
-        public JwtInterceptor jwtInterceptor() {
-            return new JwtInterceptor();
-        }
 
     // AdminInterceptor的实现
     public class AdminInterceptor implements HandlerInterceptor {
@@ -78,5 +73,5 @@ import top.suyiiyii.sims.utils.JwtUtils;
             }
         }
     }
-    }
+}
 

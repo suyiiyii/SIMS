@@ -1,14 +1,15 @@
 package top.suyiiyii.sims.common;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
-import top.suyiiyii.sims.mapper.UserMapper;
+import top.suyiiyii.sims.mapper.MpUserMapper;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 /**
@@ -20,10 +21,11 @@ import top.suyiiyii.sims.utils.JwtUtils;
  * @Version 1.0
  */
 
+@Component
 public class JwtInterceptor implements HandlerInterceptor {
 
-    @Resource
-    UserMapper userMapper;
+    @Autowired
+    MpUserMapper userMapper;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 从 Authorization 头中获取 token
