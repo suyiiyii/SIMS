@@ -26,4 +26,4 @@ COPY --from=build /layers/application/ .
 EXPOSE 8080
 
 # 执行命令
-ENTRYPOINT [ "java",  "org.springframework.boot.loader.JarLauncher" ]
+ENTRYPOINT [ "java", "org.springframework.boot.loader.launch.JarLauncher" ]
