@@ -2,20 +2,22 @@ package top.suyiiyii.sims.service;
 
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
+import top.suyiiyii.sims.controller.UserController;
 import top.suyiiyii.sims.dto.UserDto;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.*;
 import top.suyiiyii.sims.utils.JwtUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author tortoise
@@ -37,6 +39,10 @@ public class UserService {
     PermissionsMapper permissionsMapper;
     @Value("${jwt.secret}")
     private String secret;
+    @Autowired
+    private RbacService rbacService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public void addUser(User user) {
         userMapper.addUser(user);
@@ -63,53 +69,37 @@ public class UserService {
         if (!dbUser.getPassword().equals(password)) {
             throw new ServiceException("密码或用户名错误");
         }
-        HashSet<Permissions> permissionsSet = new HashSet<>();
-        Integer id = dbUser.getId();
-        List<Role> roles = roleMapper.selectRolesById(id);
-        for (Role role : roles) {
-            //根据roleid找所有permissionId
-            List<RolePermission> rolePerminsion = permissionsMapper.getRolePerminsionByRoleId(role.getRoleId());
-            for (RolePermission rolePermission : rolePerminsion) {
-                Integer permissionId = rolePermission.getPermissionId();
-                //根据permissionId找permission
-                Permissions permissions = permissionsMapper.selectById(permissionId);
-                permissionsSet.add(permissions);
-            }
+        return JwtUtils.createToken(dbUser.getId().toString(), secret);
+    }
+
+
+    public void register(UserController.RegisterRequest req) {
+
+        User dbUser = userMapper.selectByUserId(req.getStudentId());
+
+        if (req.getUsername() == null || req.getUsername().equals("")) {
+            throw new ServiceException("用户名不能为空");
         }
-
-        String token = JwtUtils.createToken(dbUser.getId().toString(), secret);
-
-
-        return token;
-
-    }
-
-
-    public User register(User user) {
-
-        User dbUser = userMapper.selectByUserId(user.getStudentId());
-
-        if (user.getUsername() == null || user.getUsername().equals("")) {
-        throw new ServiceException("用户名不能为空");
-    }
         if (dbUser != null) {
             throw new ServiceException("账号已经存在");
         }
-        if (user.getStudentId() == null || user.getStudentId().equals("")) {
+        if (req.getStudentId() == null || req.getStudentId().equals("")) {
             throw new ServiceException("学号不能为空");
         }
-        if( user.getPassword() == null || user.getPassword().equals("")) {
+        if (req.getPassword() == null || req.getPassword().equals("")) {
             throw new ServiceException("密码不能为空");
         }
-        if (user.getEmail() == null || user.getEmail().equals("")) {
+        if (req.getEmail() == null || req.getEmail().equals("")) {
             throw new ServiceException("邮箱不能为空");
         }
-        if (user.getUserGroup() == null || user.getUserGroup().equals("")) {
+        if (req.getUserGroup() == null || req.getUserGroup().equals("")) {
             throw new ServiceException("组别不能为空");
         }
+        User user =modelMapper.map(req, User.class);
 
         mpUserMapper.insert(user);
-            return user;
+        user = mpUserMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, req.getUsername()));
+        rbacService.addRoleWithUserId(user.getId(), "user");
     }
     public User selectByUsername(String username) {
         return userMapper.selectByUserName(username);
@@ -131,7 +121,7 @@ public class UserService {
             Integer id = user.getId();
             List<Role> roles = roleMapper.selectRolesById(id);
             for (Role role : roles) {
-                Integer roleId = role.getRoleId();
+                Integer roleId = role.getId();
                 // 获取一个角色的名称列表
                 List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
                 // 累加角色名称到用户的角色列表中
@@ -152,7 +142,7 @@ public class UserService {
         UserDto.setRoles(new ArrayList<>());
         List<Role> roles = roleMapper.selectRolesById(id);
         for (Role role : roles) {
-            Integer roleId = role.getRoleId();
+            Integer roleId = role.getId();
             // 获取一个角色的名称列表
             List<String> roleNameList = roleMapper.selectRoleNamesByRoleId(roleId);
             // 累加角色名称到用户的角色列表中

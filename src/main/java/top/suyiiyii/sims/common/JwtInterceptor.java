@@ -2,13 +2,13 @@ package top.suyiiyii.sims.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.suyiiyii.sims.exception.ServiceException;
-import top.suyiiyii.sims.mapper.MpUserMapper;
 import top.suyiiyii.sims.utils.JwtUtils;
+
+import java.util.Objects;
 
 /**
  * @Author tortoise
@@ -41,12 +41,12 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         // 验证 token 的有效性
-        if (!JwtUtils.verifyToken(token, secret)) {
+        if (!JwtUtils.verifyToken(token, secret) || JwtUtils.extractUserId(token) == null) {
             throw new ServiceException("401", "登录已过期，请重新登录");
         }
 
         // 获取 token 中的 user id
-        String userId = JwtUtils.extractUserId(token);
+        Integer userId = Integer.parseInt(Objects.requireNonNull(JwtUtils.extractUserId(token)));
 
         request.setAttribute("userId", userId);
         return true;
