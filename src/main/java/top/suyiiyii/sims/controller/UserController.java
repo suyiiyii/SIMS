@@ -78,6 +78,7 @@ public class UserController {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
+        user.setStudentId(request.getStudentId());
         user.setEmail(request.getEmail());
         user.setGrade(request.getGrade());
         user.setUserGroup(request.getGroup());
@@ -121,6 +122,7 @@ public class UserController {
     public static class RegisterRequest {
         private String username;
         private String password;
+        private int studentId;
         private String email;
         private String grade;
         private String group;

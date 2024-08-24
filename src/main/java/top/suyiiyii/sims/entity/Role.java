@@ -26,4 +26,7 @@ public class Role {
     //管理员，普通用户，组员，组长，队长
     private String roleName;
 
+    public static Role guest() {
+        return new Role(-1, -1, "guest");
+    }
 }

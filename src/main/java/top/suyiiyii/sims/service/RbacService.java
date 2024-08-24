@@ -38,4 +38,18 @@ public class RbacService {
         return roleMapper.selectBatchIds(userRoles.stream().map(UserRole::getRoleId).toList());
     }
 
+    public boolean addRoleWithUserId(int userId, String roleName) {
+        Role role = roleMapper.selectOne(new QueryWrapper<Role>().eq("role_name", roleName));
+        if (role == null) {
+            Role newRole = new Role();
+            newRole.setRoleName(roleName);
+            roleMapper.insert(newRole);
+            role = roleMapper.selectOne(new QueryWrapper<Role>().eq("role_name", roleName));
+        }
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userId);
+        userRole.setRoleId(role.getId());
+        return userRoleMapper.insert(userRole) > 0;
+    }
+
 }

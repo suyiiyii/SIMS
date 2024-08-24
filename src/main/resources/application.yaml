@@ -12,3 +12,6 @@ spring:
 auto-table:
   enable: true
   model-package: top.suyiiyii.sims.entity
+
+jwt:
+  secret: ${JWT_SECRET}

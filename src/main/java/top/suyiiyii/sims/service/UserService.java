@@ -3,15 +3,14 @@ package top.suyiiyii.sims.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
 import top.suyiiyii.sims.dto.UserDto;
 import top.suyiiyii.sims.entity.*;
 import top.suyiiyii.sims.exception.ServiceException;
-import top.suyiiyii.sims.mapper.PermissionsMapper;
-import top.suyiiyii.sims.mapper.RoleMapper;
-import top.suyiiyii.sims.mapper.UserMapper;
+import top.suyiiyii.sims.mapper.*;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
@@ -31,9 +30,13 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
     @Autowired
+    MpUserMapper mpUserMapper;
+    @Autowired
     RoleMapper roleMapper;
     @Autowired
     PermissionsMapper permissionsMapper;
+    @Value("${jwt.secret}")
+    private String secret;
 
     public void addUser(User user) {
         userMapper.addUser(user);
@@ -74,7 +77,7 @@ public class UserService {
             }
         }
 
-        String token = JwtUtils.createToken(dbUser.getId().toString(), dbUser.getPassword());
+        String token = JwtUtils.createToken(dbUser.getId().toString(), secret);
 
 
         return token;
@@ -93,7 +96,7 @@ public class UserService {
             throw new ServiceException("账号已经存在");
         }
         if (user.getStudentId() == null || user.getStudentId().equals("")) {
-            throw new ServiceException("用户id不能为空");
+            throw new ServiceException("学号不能为空");
         }
         if( user.getPassword() == null || user.getPassword().equals("")) {
             throw new ServiceException("密码不能为空");
@@ -105,7 +108,7 @@ public class UserService {
             throw new ServiceException("组别不能为空");
         }
 
-            userMapper.addUser(user);
+        mpUserMapper.insert(user);
             return user;
     }
     public User selectByUsername(String username) {
