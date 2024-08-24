@@ -38,7 +38,7 @@ public class UserController {
     RoleService roleService;
 
 
-    @AuthAccess
+    @AuthAccess(allowRoles = {"guest"})
     @GetMapping("/")
     public Result hello() {
 
@@ -46,6 +46,7 @@ public class UserController {
 
     }
 
+    @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/login")
     public Result<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         log.info("login request:{}", request);
@@ -63,6 +64,7 @@ public class UserController {
         return Result.success(response);
     }
 
+    @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/register")
     public Result<CommonResponse> register(@RequestBody RegisterRequest request) {
         log.info("register request:{}", request);

@@ -31,8 +31,6 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login") // 排除不需要验证的路径
-                .excludePathPatterns("/user/register")
                 .excludePathPatterns("/v3/api-docs/**");
 
         // 注册AdminInterceptor，只拦截以admin/开头的路径
