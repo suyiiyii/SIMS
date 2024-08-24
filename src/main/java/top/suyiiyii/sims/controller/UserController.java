@@ -88,6 +88,7 @@ public class UserController {
     }
 
     @Operation(description = "删除单个用户")
+    @AuthAccess(allowRoles = {"admin"})
     @DeleteMapping("/admin/user/{id}")
     public Result<CommonResponse> adminDelete(@PathVariable Integer id) {
         log.info("delete request:{}", id);
@@ -96,6 +97,7 @@ public class UserController {
     }
 
     @Operation(description = "获取所有用户信息")
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/admin/user")
     public Result<List<UserDto>> adminGet() {
         List<UserDto> allUsers = userService.findAllUsers();
@@ -103,6 +105,7 @@ public class UserController {
     }
 
     @Operation(description = "根据 id 获取用户信息")
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/admin/user/{id}")
     public Result<UserDto> adminGetById(@PathVariable Integer id) {
         log.info("selectById request:{}", id);
@@ -111,6 +114,7 @@ public class UserController {
     }
 
     @Operation(description = "获取当前用户信息")
+    @AuthAccess(allowRoles = {"user"})
     @GetMapping("/user/me")
     public Result<UserDto> getSelf() {
         UserDto user = userService.findUser(0);
