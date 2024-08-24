@@ -39,14 +39,6 @@ public class UserController {
 
 
     @AuthAccess(allowRoles = {"guest"})
-    @GetMapping("/")
-    public Result hello() {
-
-        return Result.success("success");
-
-    }
-
-    @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/login")
     public Result<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         log.info("login request:{}", request);
