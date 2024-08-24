@@ -22,7 +22,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user 新用户对象
      * @return 影响的行数
      */
-    @Insert("insert INTO user (id,student_id, username, password, name, email, userGroup) VALUES (#{id},#{studentId}, #{username}, #{password}, #{name}, #{email}, #{userGroup})")
+    @Insert("insert INTO user (id,student_id, username, password, username, email, user_group) VALUES (#{id},#{studentId}, #{username}, #{password}, #{name}, #{email}, #{userGroup})")
     int addUser(User user);
 
     /**
@@ -41,10 +41,10 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET " +
             "student_id = #{userId}, " +
             "username = #{username}, " +
-            "name = #{name}, " +
+            "username = #{name}, " +
             "email = #{email}, " +
             "grade = #{grade}, " +
-            "userGroup = #{group} " +
+            "user_group = #{group} " +
             "WHERE id = #{id}")
     int updateUser(User user);
 
@@ -53,7 +53,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
-    @Select("SELECT id, student_id, username, password, name, email,grade,user_group from user WHERE student_id = #{id}")
+    @Select("SELECT id, student_id, username, password, username, email,grade,user_group from user WHERE student_id = #{id}")
     User selectByUserId(Integer id);
 
     /**
@@ -61,13 +61,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
-    @Select("SELECT id, student_id, username, password, name, email,grade, user_group from user WHERE id = #{id}")
+    @Select("SELECT id, student_id, username, password, username, email,grade, user_group from user WHERE id = #{id}")
     User selectById(Integer id);
     /**
      * 查询所有用户信息
      * @return 用户列表
      */
-    @Select("SELECT id, student_id, username, password, name, email, grade, user_group FROM user")
+    @Select("SELECT id, student_id, username, password, username, email, grade, user_group FROM user")
     List<User> selectAll();
 
   @Select("select * from user where username = #{username}")
