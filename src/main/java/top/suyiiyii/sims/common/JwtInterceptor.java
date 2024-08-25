@@ -1,5 +1,6 @@
 package top.suyiiyii.sims.common;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,10 +42,13 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         // 验证 token 的有效性
-        if (!JwtUtils.verifyToken(token, secret) || JwtUtils.extractUserId(token) == null) {
+        try {
+            if (!JwtUtils.verifyToken(token, secret) || JwtUtils.extractUserId(token) == null) {
+                throw new ServiceException("401", "登录已过期，请重新登录");
+            }
+        } catch (TokenExpiredException e) {
             throw new ServiceException("401", "登录已过期，请重新登录");
         }
-
         // 获取 token 中的 user id
         Integer userId = Integer.parseInt(Objects.requireNonNull(JwtUtils.extractUserId(token)));
 
