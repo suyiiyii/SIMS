@@ -4,13 +4,13 @@
 
 spring:
   datasource:
-    url:
-    username:
-    password:
-    driver-class-name:
+    url: ""
+    username: ""
+    password: ""
+    driverClassName: ""
 
 jwt:
-  secret:
+  secret: ""
 
 
 replicaCount: 1
