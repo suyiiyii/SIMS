@@ -2,6 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+spring:
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name:
+
+jwt:
+  secret:
+
+
 replicaCount: 1
 
 image:
