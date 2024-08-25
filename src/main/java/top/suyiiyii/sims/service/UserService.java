@@ -1,23 +1,24 @@
 package top.suyiiyii.sims.service;
 
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-
 import top.suyiiyii.sims.controller.UserController;
 import top.suyiiyii.sims.dto.UserDto;
-import top.suyiiyii.sims.entity.*;
+import top.suyiiyii.sims.entity.Role;
+import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
-import top.suyiiyii.sims.mapper.*;
+import top.suyiiyii.sims.mapper.MpUserMapper;
+import top.suyiiyii.sims.mapper.PermissionsMapper;
+import top.suyiiyii.sims.mapper.RoleMapper;
+import top.suyiiyii.sims.mapper.UserMapper;
 import top.suyiiyii.sims.utils.JwtUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author tortoise
@@ -59,8 +60,9 @@ public class UserService {
     public List<User> selectAll() {
         return userMapper.selectAll();
     }
-//TODO:返回一个DTO,用户基本信息
-    public String login(String username, String password)  {
+
+    //TODO:返回一个DTO,用户基本信息
+    public String login(String username, String password) {
 
         User dbUser = userMapper.selectByUserName(username);
         if (dbUser == null) {
@@ -95,19 +97,22 @@ public class UserService {
         if (req.getUserGroup() == null || req.getUserGroup().equals("")) {
             throw new ServiceException("组别不能为空");
         }
-        User user =modelMapper.map(req, User.class);
+        User user = modelMapper.map(req, User.class);
 
         mpUserMapper.insert(user);
         user = mpUserMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, req.getUsername()));
         rbacService.addRoleWithUserId(user.getId(), "user");
     }
+
     public User selectByUsername(String username) {
         return userMapper.selectByUserName(username);
     }
+
     public void updatePassword(User user) {
         userMapper.updatePassword(user);
     }
-    public List<UserDto> findAllUsers(){
+
+    public List<UserDto> findAllUsers() {
         List<User> users = userMapper.selectAll();
         List<UserDto> UserDtos = new ArrayList<>();
 
@@ -131,6 +136,7 @@ public class UserService {
         }
         return UserDtos;
     }
+
     public UserDto findUser(Integer id) {
 
         UserDto UserDto = new UserDto();

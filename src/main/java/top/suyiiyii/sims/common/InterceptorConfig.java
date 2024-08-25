@@ -31,7 +31,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/v3/api-docs/**");
         registry.addInterceptor(rbacInterceptor)
-                .excludePathPatterns("/v3/api-docs/**");;
+                .excludePathPatterns("/v3/api-docs/**");
 
         super.addInterceptors(registry);
     }

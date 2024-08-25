@@ -1,12 +1,8 @@
 package top.suyiiyii.sims.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import lombok.Data;
 import org.apache.ibatis.annotations.*;
-import top.suyiiyii.sims.entity.Permissions;
 import top.suyiiyii.sims.entity.Role;
 import top.suyiiyii.sims.entity.User;
-import top.suyiiyii.sims.entity.UserRole;
 
 import java.util.List;
 
@@ -22,15 +18,18 @@ import java.util.List;
 public interface RoleMapper {
     @Insert("INSERT INTO role(name) VALUES(#{name}")
     void addRole(String name);
-@Delete("DELETE FROM role WHERE name=#{name}")
+
+    @Delete("DELETE FROM role WHERE name=#{name}")
     void deleteRole(String name);
-@Update("UPDATE role SET name=#{newName} WHERE name=#{name}")
+
+    @Update("UPDATE role SET name=#{newName} WHERE name=#{name}")
     void updateRole(String name, String newName);
+
     /**
+     * @param
      * @author: tortoise
      * @date: 2024/8/14 14:23
      * @Description: TODO 查询用户信息
-     * @param
      * @return: java.util.List<top.suyiiyii.sims.entity.User>
      */
     @Select("SELECT u.username, u.name, u.userId, r.role_name " +
@@ -53,7 +52,7 @@ public interface RoleMapper {
             "(SELECT role_id FROM user_role WHERE user_id = #{user_id})")
     List<Role> selectRolesById(@Param("user_id") int id);
 
-@Select("SELECT role_name FROM role WHERE role_id=#{roleId}")
+    @Select("SELECT role_name FROM role WHERE role_id=#{roleId}")
     List<String> selectRoleNamesByRoleId(Integer roleId);
 
 

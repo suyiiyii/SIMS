@@ -11,7 +11,6 @@ import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.UserDto;
-import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
