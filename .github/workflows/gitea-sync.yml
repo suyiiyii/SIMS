@@ -12,5 +12,5 @@ jobs:
       - name: Trigger Gitea sync
         run: |
           echo "Triggering Gitea sync"
-          curl 'https://git.suyiiyii.top/api/v1/repos/ssyg/SIMS/mirror-sync' -X POST  -H 'Authorization: token {{ secrets.GiteaToken }}'
+          curl 'https://git.suyiiyii.top/api/v1/repos/ssyg/SIMS/mirror-sync' -X POST  -H 'Authorization: token ${{ secrets.GITEATOKEN }}'
 
