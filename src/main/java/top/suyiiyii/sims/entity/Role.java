@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-    @ColumnId(mode = IdType.AUTO,comment = "id主键")
+    @ColumnId(mode = IdType.AUTO, comment = "id主键")
     private Integer id;
     //管理员，普通用户，组员，组长，队长
     @ColumnNotNull
@@ -29,6 +29,6 @@ public class Role {
     private String tag;
 
     public static Role guest() {
-        return new Role(-1, "guest","");
+        return new Role(-1, "guest", "");
     }
 }

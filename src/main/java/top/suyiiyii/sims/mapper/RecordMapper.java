@@ -1,7 +1,6 @@
 package top.suyiiyii.sims.mapper;
 
 import org.apache.ibatis.annotations.*;
-import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 
 import java.util.List;
@@ -17,9 +16,10 @@ import java.util.List;
 @Mapper
 public interface RecordMapper {
     //分页查询
-@Select("select * from record limit #{page},#{size}")
+    @Select("select * from record limit #{page},#{size}")
     List<Record> getAllRecords(Integer page, Integer size);
-//根据学号分页查询所以信息
+
+    //根据学号分页查询所以信息
     @Select("select * from record where student_id = #{id} limit #{page},#{size}")
     List<Record> getMyAllRecords(Integer page, Integer size, String id);
 
@@ -42,6 +42,7 @@ public interface RecordMapper {
 
     @Delete("delete from record where id = #{id}")
     void deleteRecord(Integer id);
+
     @Insert({
             "insert into record (student_id, category_id, `date`, content, reason, amount, remark, is_revoked,",
             "revoke_date, revoke_reason, revoke_remark, operator_user_id, last_update_time)",

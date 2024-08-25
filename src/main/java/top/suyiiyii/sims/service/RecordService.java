@@ -1,10 +1,8 @@
 package top.suyiiyii.sims.service;
 
 
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.mapper.RecordMapper;
 import top.suyiiyii.sims.mapper.UserMapper;

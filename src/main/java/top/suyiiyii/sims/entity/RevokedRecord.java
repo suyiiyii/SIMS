@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @Date 2024/8/10 0:34
  * @PackageName:top.suyiiyii.sims.entity
  * @ClassName: RevokedRecord
- * @Description:  存储管理员对奖惩记录的撤销信息，包括撤销原因
+ * @Description: 存储管理员对奖惩记录的撤销信息，包括撤销原因
  * @Version 1.0
  */
 @Data

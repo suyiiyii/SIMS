@@ -1,7 +1,6 @@
 package top.suyiiyii.sims.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.autotable.annotation.ColumnNotNull;
 import com.tangzc.mpe.autotable.annotation.ColumnId;
 import com.tangzc.mpe.autotable.annotation.Table;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRole {
-    @ColumnId(mode = IdType.AUTO,comment = "id主键")
+    @ColumnId(mode = IdType.AUTO, comment = "id主键")
     private Integer id;
     @ColumnNotNull
     private Integer userId;

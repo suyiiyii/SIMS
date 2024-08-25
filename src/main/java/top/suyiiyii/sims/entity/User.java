@@ -21,18 +21,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @ColumnId(mode = IdType.AUTO,comment = "id主键")
+    @ColumnId(mode = IdType.AUTO, comment = "id主键")
     private Integer id;
-    @Column(comment = "学生id",notNull = true)
+    @Column(comment = "学生id", notNull = true)
     private Integer studentId;
-    @Column(comment = "用户名",notNull = true)
+    @Column(comment = "用户名", notNull = true)
     private String username;
-    @Column(comment = "密码",notNull = true)
+    @Column(comment = "密码", notNull = true)
     private String password;
-    @Column(comment = "邮箱",notNull = true)
+    @Column(comment = "邮箱", notNull = true)
     private String email;
-    @Column(comment = "年级",notNull = true)
+    @Column(comment = "年级", notNull = true)
     private String grade;
-    @Column(comment = "用户所属团队",notNull = true)
+    @Column(comment = "用户所属团队", notNull = true)
     private String userGroup;
 }

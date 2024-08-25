@@ -1,35 +1,23 @@
 package top.suyiiyii.sims.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.v3.oas.annotations.Operation;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
-import top.suyiiyii.sims.entity.Role;
-import top.suyiiyii.sims.entity.User;
-import top.suyiiyii.sims.entity.UserRole;
-import top.suyiiyii.sims.mapper.CategoryMapper;
-import top.suyiiyii.sims.mapper.UserMapper;
 import top.suyiiyii.sims.service.CategoryService;
 import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
 import top.suyiiyii.sims.utils.JwtUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class
@@ -57,7 +45,7 @@ RecordController {
 
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
-            recordDto.setSubCategoryName(categoryService.getsubCategoryName( record.getCategoryId()));
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDtos.add(recordDto);
         }
         return Result.success(recordDtos);
@@ -70,16 +58,16 @@ RecordController {
                                           @RequestParam(defaultValue = "10") int size,
                                           HttpServletRequest request) {
         String token = (String) request.getAttribute("token");
-        String userId= JwtUtils.extractUserId(token);
-        List<RecordDto> recordDtos=new ArrayList<>();
+        String userId = JwtUtils.extractUserId(token);
+        List<RecordDto> recordDtos = new ArrayList<>();
 
-        List<Record> records = recordService.getMyAllRecords(page, size,userId);
+        List<Record> records = recordService.getMyAllRecords(page, size, userId);
         for (Record record : records) {
 
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
 
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
-            recordDto.setSubCategoryName(categoryService.getsubCategoryName( record.getCategoryId()));
+            recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
 
             recordDtos.add(recordDto);
         }
@@ -92,7 +80,7 @@ RecordController {
     @PutMapping("/admin/record/{id}")
     public Result<CommonResponse> adminUpdateRecord(@PathVariable Integer id, @RequestBody RecordDto recordDto) {
         Record record = modelMapper.map(recordDto, Record.class);
-        recordService.updateRecord(record,id);
+        recordService.updateRecord(record, id);
         return Result.msg("修改成功");
     }
 
