@@ -22,22 +22,22 @@ spec:
         name: sims
         resources: {}
         env:
-        - name: SPRING_DATASOURCE_URL
+        - name: DATASOURCE_URL
           valueFrom:
             secretKeyRef:
               name: secret
               key: spring.datasource.url
-        - name: SPRING_DATASOURCE_USERNAME
+        - name: DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
               name: secret
               key: spring.datasource.username
-        - name: SPRING_DATASOURCE_PASSWORD
+        - name: DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: secret
               key: spring.datasource.password
-        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+        - name: DATASOURCE_DRIVER_CLASS_NAME
           valueFrom:
             secretKeyRef:
               name: secret
