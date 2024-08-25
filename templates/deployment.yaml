@@ -21,4 +21,30 @@ spec:
       - image: ghcr.io/suyiiyii/sims:main
         name: sims
         resources: {}
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: spring.datasource.url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: spring.datasource.username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: spring.datasource.password
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: spring.datasource.driver-class-name
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: jwt.secret
 status: {}
