@@ -105,7 +105,15 @@ jobs:
         if: github.event_name == 'push'
         run: |
           echo "Updating manifest"
+          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          chmod +x /usr/bin/yq
           yq eval '.image.tag = "${{ steps.meta.outputs.tags }}"' -i values.yaml
-          git add values.yaml
-          git commit -m "Update deployment image to ${{ steps.meta.outputs.tags }}"
-          git push
+      - name: Git Auto Commit
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          commit_message: "Update deployment image to ${{ steps.meta.outputs.tags }}"
+          branch: manifest
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
