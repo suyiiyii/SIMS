@@ -1,4 +1,4 @@
-name: Docker
+name: Docker Build and Publish
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -94,3 +94,18 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Checkout manifest
+        if: github.event_name == 'push'
+        uses: actions/checkout@v4
+        with:
+          ref: manifest
+
+      - name: Update manifest
+        if: github.event_name == 'push'
+        run: |
+          echo "Updating manifest"
+          yq eval '.image.tag = "${{ steps.meta.outputs.tags }}"' -i values.yaml
+          git add values.yaml
+          git commit -m "Update deployment image to ${{ steps.meta.outputs.tags }}"
+          git push

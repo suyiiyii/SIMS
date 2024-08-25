@@ -3,6 +3,8 @@ on:
   push:
     branches: [ "main", "manifest" ]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker Build and Publish"]
 
 
 jobs:
