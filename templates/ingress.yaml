@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: backend
+spec:
+  rules:
+  - host: backend.kl.suyiiyii.top
+    http:
+      paths:
+      - backend:
+          service:
+            name: backend
+            port:
+              number: 80
+        path: /
+        pathType: Exact
+status:
+  loadBalancer: {}
