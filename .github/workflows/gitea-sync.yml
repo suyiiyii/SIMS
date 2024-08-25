@@ -1,0 +1,16 @@
+name: gitea-sync.yml
+on:
+  push:
+    branches: [ "main", "manifest" ]
+  workflow_dispatch:
+
+
+jobs:
+  trigger-gitea-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Gitea sync
+        run: |
+          echo "Triggering Gitea sync"
+          curl 'https://git.suyiiyii.top/api/v1/repos/ssyg/SIMS/mirror-sync' -X POST  -H 'Authorization: token ${{ secrets.GITEATOKEN }}'
+
