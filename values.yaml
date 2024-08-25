@@ -15,7 +15,7 @@ image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "ghcr.io/suyiiyii/sims:main"
+  tag: "240825-8d10add"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
