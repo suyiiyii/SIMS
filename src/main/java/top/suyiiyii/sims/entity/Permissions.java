@@ -22,7 +22,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Permissions {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
     //权限id
     private Integer permissionId;

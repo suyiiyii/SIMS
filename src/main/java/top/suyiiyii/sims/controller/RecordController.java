@@ -15,7 +15,7 @@ import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.entity.Role;
-import top.suyiiyii.sims.entity.User;
+
 import top.suyiiyii.sims.entity.UserRole;
 import top.suyiiyii.sims.mapper.CategoryMapper;
 import top.suyiiyii.sims.mapper.UserMapper;

@@ -23,7 +23,7 @@ import java.security.Permission;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RolePermission {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
     private Integer roleId;
     private Integer permissionId;

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
     private Integer roleId;
     //管理员，普通用户，组员，组长，队长

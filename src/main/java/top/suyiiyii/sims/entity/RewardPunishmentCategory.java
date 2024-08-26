@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RewardPunishmentCategory {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
 
     private Integer categoryId;

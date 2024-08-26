@@ -74,11 +74,12 @@ public class UserController {
             throw new ServiceException("密码长度不能小于3位");
         }
         User user = new User();
+
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
         user.setGrade(request.getGrade());
-        user.setUserGroup(request.getGroup());
+        user.setUserGroup(request.getUserGroup());
         userService.register(user);
 
         return Result.success(CommonResponse.factory("注册成功"));
@@ -118,10 +119,11 @@ public class UserController {
     @Data
     public static class RegisterRequest {
         private String username;
+        private Integer studentId;
         private String password;
         private String email;
         private String grade;
-        private String group;
+        private String userGroup;
     }
 
     @Data

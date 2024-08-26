@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HierarchyRelation {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
 
     // 上级用户ID

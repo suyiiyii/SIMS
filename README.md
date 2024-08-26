@@ -13,7 +13,7 @@ Super Invincible Management System
 8. require review: 请求reviewpush
 9. merge: 合并 PR
 10. delete: 删除分支
- 
+
 1. 基础rbac的五张表: user, role, permission, user_role, role_permission
 2. 然后奖惩记录这张表，通过用户id来查到，里面有相应的记录， 有一个 奖惩类别ID是对应到奖惩类型去的
 3. 有一个上下级关系表，想着是用户明确查上下级就可以用查，

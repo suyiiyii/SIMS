@@ -84,7 +84,7 @@ public class UserService {
 
     public User register(User user) {
 
-        User dbUser = userMapper.selectByUserId(user.getStudentId());
+        User dbUser = userMapper.selectById(user.getId());
 
         if (user.getUsername() == null || user.getUsername().equals("")) {
         throw new ServiceException("用户名不能为空");
@@ -92,9 +92,7 @@ public class UserService {
         if (dbUser != null) {
             throw new ServiceException("账号已经存在");
         }
-        if (user.getStudentId() == null || user.getStudentId().equals("")) {
-            throw new ServiceException("用户id不能为空");
-        }
+
         if( user.getPassword() == null || user.getPassword().equals("")) {
             throw new ServiceException("密码不能为空");
         }
@@ -160,9 +158,7 @@ public class UserService {
         return UserDto;
     }
 
-    public User selectByUserId(Integer studentId) {
-        return userMapper.selectByUserId(studentId);
-    }
+
 
     public List<Role> selectRolesById(Integer studentId) {
         return roleMapper.selectRolesById(studentId);

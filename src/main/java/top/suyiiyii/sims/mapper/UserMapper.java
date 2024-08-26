@@ -22,7 +22,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user 新用户对象
      * @return 影响的行数
      */
-    @Insert("insert INTO user (id,student_id, username, password, name, email, userGroup) VALUES (#{id},#{studentId}, #{username}, #{password}, #{name}, #{email}, #{userGroup})")
+    @Insert("insert INTO user (student_id, username, password,  email, user_group) VALUES (#{studentId}, #{username}, #{password},  #{email}, #{userGroup})")
     int addUser(User user);
 
     /**
@@ -41,7 +41,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET " +
             "student_id = #{userId}, " +
             "username = #{username}, " +
-            "name = #{name}, " +
+
             "email = #{email}, " +
             "grade = #{grade}, " +
             "userGroup = #{group} " +
@@ -53,7 +53,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
-    @Select("SELECT id, student_id, username, password, name, email,grade,user_group from user WHERE student_id = #{id}")
+    @Select("SELECT id, student_id, username, password, email,grade,user_group from user WHERE student_id = #{id}")
     User selectByUserId(Integer id);
 
     /**
@@ -61,13 +61,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
-    @Select("SELECT id, student_id, username, password, name, email,grade, user_group from user WHERE id = #{id}")
+    @Select("SELECT id, student_id, username, password,  email,grade, user_group from user WHERE id = #{id}")
     User selectById(Integer id);
     /**
      * 查询所有用户信息
      * @return 用户列表
      */
-    @Select("SELECT id, student_id, username, password, name, email, grade, user_group FROM user")
+    @Select("SELECT id, student_id, username, password,  email, grade, user_group FROM user")
     List<User> selectAll();
 
   @Select("select * from user where username = #{username}")
@@ -75,7 +75,7 @@ public interface UserMapper extends BaseMapper<User> {
 @Update("update user set password = #{password} where username = #{username}")
     void updatePassword(User user);
 @Select("select student_id from user where id = #{userId}")
-    String getStudentIdById(String userId);
+Integer getStudentIdById(Integer userId);
     @Select("SELECT student_id from user WHERE id = #{id}")
     Integer selectStudentIdByUserId(Integer id);
 }

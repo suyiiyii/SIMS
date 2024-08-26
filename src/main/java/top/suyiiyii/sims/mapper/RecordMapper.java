@@ -20,7 +20,7 @@ public interface RecordMapper {
     List<Record> getAllRecords(Integer page, Integer size);
 //根据学号分页查询所以信息
     @Select("select * from record where student_id = #{id} limit #{page},#{size}")
-    List<Record> getMyAllRecords(Integer page, Integer size, String id);
+    List<Record> getMyAllRecords(Integer page, Integer size, Integer id);
     //根据id，更新对应信息
     @Update("UPDATE record SET "
 
