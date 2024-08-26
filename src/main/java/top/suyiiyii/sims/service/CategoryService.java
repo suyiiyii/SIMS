@@ -19,7 +19,7 @@ public class CategoryService {
 
 
     public String getCategoryName(Integer id) {
-            return categoryMapper.getCategoryName(id);
+        return categoryMapper.getCategoryName(id);
     }
 
     public String getsubCategoryName(Integer categoryId) {

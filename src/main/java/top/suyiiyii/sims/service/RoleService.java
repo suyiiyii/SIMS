@@ -1,11 +1,9 @@
 package top.suyiiyii.sims.service;
 
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.suyiiyii.sims.entity.Role;
 import top.suyiiyii.sims.entity.User;
-import top.suyiiyii.sims.entity.UserRole;
 import top.suyiiyii.sims.mapper.RoleMapper;
 
 import java.util.List;
@@ -23,21 +21,20 @@ public class RoleService {
     @Autowired
     RoleMapper roleMapper;
 
-    public List<User> findAllUsersWithRoles(){
+    public List<User> findAllUsersWithRoles() {
         return roleMapper.selectAllUsersWithRoles();
     }
+
     /**
+     * @param
      * @author: tortoise
      * @date: 2024/8/14 14:39
      * @Description: TODO 查看自己身份
-     * @param Id
      * @return: java.util.List<top.suyiiyii.sims.entity.Role>
      */
-    public List<Role> selectRolesById(int id){
+    public List<Role> selectRolesById(int id) {
         return roleMapper.selectRolesById(id);
     }
-
-
 
 
     public boolean isRoleNameAdmin(Integer id) {

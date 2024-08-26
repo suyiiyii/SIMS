@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.User;
@@ -28,12 +29,14 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/findAllUsersWithRoles")
     public Result findAllUsersWithRoles() {
         List<User> userList = roleService.findAllUsersWithRoles();
         return Result.success(userList);
     }
 
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/selectAll")
     public Result selectAll() {
         List<User> users = userService.selectAll();
@@ -42,8 +45,8 @@ public class AdminController {
 
 }
 /**
- request.setAttribute();lUsers();
-        return Result.success(userList);
-    }
-}
-**/
+ * request.setAttribute();lUsers();
+ * return Result.success(userList);
+ * }
+ * }
+ **/

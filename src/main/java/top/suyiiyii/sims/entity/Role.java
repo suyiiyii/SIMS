@@ -1,7 +1,8 @@
 package top.suyiiyii.sims.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.tangzc.autotable.annotation.ColumnNotNull;
+import com.tangzc.mpe.autotable.annotation.ColumnId;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +21,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-    @TableId(type= IdType.AUTO)
-    private Integer id;
-    private Integer roleId;
-    //管理员，普通用户，组员，组长，队长
-    private String roleName;
 
+    @ColumnId(mode = IdType.AUTO, comment = "id主键")
+
+    private Integer id;
+    //管理员，普通用户，组员，组长，队长
+    @ColumnNotNull
+    private String roleName;
+    private String tag;
+
+    public static Role guest() {
+        return new Role(-1, "guest", "");
+    }
 }

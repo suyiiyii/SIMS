@@ -11,7 +11,6 @@ import top.suyiiyii.sims.common.AuthAccess;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.UserDto;
-import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
@@ -38,14 +37,7 @@ public class UserController {
     RoleService roleService;
 
 
-    @AuthAccess
-    @GetMapping("/")
-    public Result hello() {
-
-        return Result.success("success");
-
-    }
-
+    @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/login")
     public Result<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         log.info("login request:{}", request);
@@ -63,6 +55,7 @@ public class UserController {
         return Result.success(response);
     }
 
+    @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/register")
     public Result<CommonResponse> register(@RequestBody RegisterRequest request) {
         log.info("register request:{}", request);
@@ -73,19 +66,15 @@ public class UserController {
         if (request.getPassword() == null || request.getPassword().length() < 3) {
             throw new ServiceException("密码长度不能小于3位");
         }
-        User user = new User();
 
-        user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
-        user.setEmail(request.getEmail());
-        user.setGrade(request.getGrade());
-        user.setUserGroup(request.getUserGroup());
-        userService.register(user);
+        userService.register(request);
+
 
         return Result.success(CommonResponse.factory("注册成功"));
     }
 
     @Operation(description = "删除单个用户")
+    @AuthAccess(allowRoles = {"admin"})
     @DeleteMapping("/admin/user/{id}")
     public Result<CommonResponse> adminDelete(@PathVariable Integer id) {
         log.info("delete request:{}", id);
@@ -94,6 +83,7 @@ public class UserController {
     }
 
     @Operation(description = "获取所有用户信息")
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/admin/user")
     public Result<List<UserDto>> adminGet() {
         List<UserDto> allUsers = userService.findAllUsers();
@@ -101,6 +91,7 @@ public class UserController {
     }
 
     @Operation(description = "根据 id 获取用户信息")
+    @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/admin/user/{id}")
     public Result<UserDto> adminGetById(@PathVariable Integer id) {
         log.info("selectById request:{}", id);
@@ -109,6 +100,7 @@ public class UserController {
     }
 
     @Operation(description = "获取当前用户信息")
+    @AuthAccess(allowRoles = {"user"})
     @GetMapping("/user/me")
     public Result<UserDto> getSelf() {
         UserDto user = userService.findUser(0);
@@ -121,6 +113,7 @@ public class UserController {
         private String username;
         private Integer studentId;
         private String password;
+
         private String email;
         private String grade;
         private String userGroup;

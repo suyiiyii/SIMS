@@ -16,11 +16,12 @@ import java.util.List;
 @Mapper
 public interface RecordMapper {
     //分页查询
-@Select("select * from record limit #{page},#{size}")
+    @Select("select * from record limit #{page},#{size}")
     List<Record> getAllRecords(Integer page, Integer size);
-//根据学号分页查询所以信息
+
+    //根据学号分页查询所以信息
     @Select("select * from record where student_id = #{id} limit #{page},#{size}")
-    List<Record> getMyAllRecords(Integer page, Integer size, Integer id);
+    List<Record> getMyAllRecords(Integer page, Integer size, String id);
     //根据id，更新对应信息
     @Update("UPDATE record SET "
 
@@ -39,6 +40,7 @@ public interface RecordMapper {
     void updateRecord(Record record, Integer id);
     @Delete("delete from record where id = #{id}")
     void deleteRecord(Integer id);
+
     @Insert({
             "insert into record (student_id, category_id, `date`, content, reason, amount, remark, is_revoked,",
             "revoke_date, revoke_reason, revoke_remark, operator_user_id, last_update_time)",

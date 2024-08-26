@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @Date 2024/8/10 0:31
  * @PackageName:top.suyiiyii.sims.entity
  * @ClassName: RevokeRequest
- * @Description:  存储普通成员提出的奖惩撤销申请，并跟踪申请状态
+ * @Description: 存储普通成员提出的奖惩撤销申请，并跟踪申请状态
  * @Version 1.0
  */
 @Data

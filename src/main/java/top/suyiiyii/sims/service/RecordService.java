@@ -32,7 +32,7 @@ public class RecordService {
 
 
     public List<Record> getMyAllRecords(Integer page, Integer size, String userId) {
-        Integer studentId = userMapper.getStudentIdById(Integer.valueOf(userId));
+        String studentId = userMapper.getStudentIdById(userId);
         return recordMapper.getMyAllRecords(page, size, studentId);
     }
 
