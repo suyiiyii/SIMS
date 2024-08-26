@@ -16,9 +16,6 @@ import top.suyiiyii.sims.service.RoleService;
  */
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurationSupport {
-    @Autowired
-    private RoleService roleService;
-
 
     @Autowired
     private JwtInterceptor jwtInterceptor;

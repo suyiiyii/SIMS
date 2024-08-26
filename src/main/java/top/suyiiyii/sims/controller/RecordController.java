@@ -108,6 +108,7 @@ RecordController {
         recordService.addRecord(record);
         return Result.msg("添加成功");
     }
+    @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "模糊查询奖惩记录")
     @GetMapping("/admin/likeRecords")
     public Result<List<RecordDto>> searchRecords(
@@ -115,17 +116,24 @@ RecordController {
             @RequestParam(defaultValue = "10") int size,
             String username,Integer studentId, String userGroup, String grade,String roleName) {
         Integer s1=studentId;
+        List<Integer> studentIds = new ArrayList<>();
+        List<Record> records=new ArrayList<>();
+        studentIds.add(studentId);
         if(roleName!="") {
             //rolename查用户id
             Integer userId = roleService.getIdByrolename(roleName);
-            //  用户id查记录
-          //  s1 = userService.selectStudentIdByUserId(userId);
+         //     用户id查记录
+          s1 = userService.getStudentIdByUserId(userId);
+            studentIds.add(s1);
         }
         if(username!="") {
             //username查用户StudentId
             s1= roleService.getStudentIdByUsername(username);
+            studentIds.add(s1);
         }
-        List<Record> records=recordService.getRecordsLike(page,size,s1,userGroup,grade);
+        for (Integer Sid : studentIds) {
+            records.addAll(recordService.getRecordsLike(page,size,Sid,userGroup,grade));
+        }
         List<RecordDto> RecordDtos = new ArrayList<>();
         for (Record record : records) {
             RecordDto RecordDto = modelMapper.map(record, RecordDto.class);

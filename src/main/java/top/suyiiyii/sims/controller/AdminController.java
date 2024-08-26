@@ -32,6 +32,7 @@ public class AdminController {
     @AuthAccess(allowRoles = {"admin"})
     @GetMapping("/findAllUsersWithRoles")
     public Result findAllUsersWithRoles() {
+
         List<User> userList = roleService.findAllUsersWithRoles();
         return Result.success(userList);
     }

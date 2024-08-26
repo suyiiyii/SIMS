@@ -45,14 +45,6 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public void addUser(User user) {
-        userMapper.addUser(user);
-    }
-
-    public void updateUser(User user) {
-        userMapper.updateUser(user);
-    }
-
     public void deleteUser(int id) {
         userMapper.deleteUser(id);
     }
@@ -106,13 +98,6 @@ public class UserService {
         rbacService.addRoleWithUserId(user.getId(), "user");
     }
 
-    public User selectByUsername(String username) {
-        return userMapper.selectByUserName(username);
-    }
-
-    public void updatePassword(User user) {
-        userMapper.updatePassword(user);
-    }
 
     public List<UserDto> findAllUsers() {
         List<User> users = userMapper.selectAll();
@@ -161,13 +146,13 @@ public class UserService {
         return UserDto;
     }
 
-
-
+/*
     public List<Role> selectRolesById(Integer studentId) {
         return roleMapper.selectRolesById(studentId);
     }
+*/
 
-
-
-
+    public Integer getStudentIdByUserId(Integer userId) {
+        return userMapper.getStudentIdByUserId(userId);
+    }
 }

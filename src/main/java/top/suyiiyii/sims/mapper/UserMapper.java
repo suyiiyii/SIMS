@@ -96,4 +96,6 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select student_id from user where id = #{userId}")
     String getStudentIdById(String userId);
 
+    @Select("select student_id from user where id = #{userId}")
+    Integer getStudentIdByUserId(Integer userId);
 }
