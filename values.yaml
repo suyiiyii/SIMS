@@ -15,7 +15,7 @@ image:
   repository: ghcr.io/suyiiyii/sims
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "240825-6e3ffa0"
+  tag: "240826-2c51b04"
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
@@ -40,7 +40,6 @@ image:
 # # readOnlyRootFilesystem: true
 # # runAsNonRoot: true
 # # runAsUser: 1000
-
 # service:
 #   type: ClusterIP
 #   port: 80
