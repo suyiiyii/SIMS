@@ -1,4 +1,4 @@
-name: gitea-sync.yml
+name: Gitea Sync
 on:
   push:
     branches: [ "main", "manifest" ]
