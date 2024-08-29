@@ -28,8 +28,7 @@ public class RbacInterceptor implements HandlerInterceptor {
             return true;
         }
         if ("OPTIONS".equals(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return false;
+            return true;
         }
         // 获取用户角色
         List<String> roles = getUserRole(request).stream().map(Role::getRoleName).toList();
