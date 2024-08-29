@@ -61,12 +61,10 @@ RecordController {
         String token = (String) request.getAttribute("token");
         String userId = JwtUtils.extractUserId(token);
         List<RecordDto> recordDtos = new ArrayList<>();
-
         List<Record> records = recordService.getMyAllRecords(page, size, userId);
         for (Record record : records) {
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
-
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
 
 
