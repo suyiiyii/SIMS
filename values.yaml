@@ -15,7 +15,7 @@ image:
   repository: ghcr.io/suyiiyii/sims
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "240829-f867d7b"
+  tag: "240829-0fea966"
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
@@ -94,7 +94,6 @@ image:
 # # - name: foo
 # #   mountPath: "/etc/foo"
 # #   readOnly: true
-
 # nodeSelector: {}
 # tolerations: []
 # affinity: {}
