@@ -2,6 +2,7 @@ package top.suyiiyii.sims.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.tangzc.mpe.autotable.annotation.Column;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;

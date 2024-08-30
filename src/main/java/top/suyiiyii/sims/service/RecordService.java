@@ -1,10 +1,13 @@
 package top.suyiiyii.sims.service;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
+import top.suyiiyii.sims.mapper.CategoryMapper;
 import top.suyiiyii.sims.mapper.RecordMapper;
 import top.suyiiyii.sims.mapper.UserMapper;
 
@@ -24,7 +27,10 @@ public class RecordService {
     RecordMapper recordMapper;
     @Autowired
     UserMapper userMapper;
-
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    CategoryMapper categoryMapper;
     public List<Record> getAllRecords(Integer page, Integer size) {
 
         return recordMapper.getAllRecords(page, size);
@@ -44,8 +50,21 @@ public class RecordService {
         recordMapper.deleteRecord(id);
     }
 
-    public void addRecord(Record record) {
+    public void addRecord(RecordDto recordDto) {
+        //把recordDto转化成Record
+        Record record = modelMapper.map(recordDto, Record.class);
+        //查看数据库里面是否有这个类别
+        String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getCategoryName());
+
+        if(subCategoryName == null) {
+            //没有这个类别就加上
+            categoryMapper.addsubcategory(recordDto.getCategoryName(), recordDto.getSubCategoryName());
+        }
+        Integer categoryId = categoryMapper.getIdBySubCategoryName(recordDto.getSubCategoryName());
+        categoryMapper.addCategoryId(categoryId);
+        record.setCategoryId(categoryId);
         recordMapper.addRecord(record);
+
     }
 
     public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {

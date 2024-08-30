@@ -27,8 +27,12 @@ public class CategoryService {
     }
 
 
-    public Integer getIdBySubCategoryName(String subCategoryName) {
-        return categoryMapper.getIdBySubCategoryName(subCategoryName);
 
+    public Integer getIdByCategoryName(String categoryName) {
+        return categoryMapper.getIdByCategoryName(categoryName);
+    }
+
+    public String IsSubCategoryName(String subCategoryName) {
+        return categoryMapper.IsSubCategoryName(subCategoryName);
     }
 }

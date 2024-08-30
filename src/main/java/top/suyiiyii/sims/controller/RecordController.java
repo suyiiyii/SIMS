@@ -2,6 +2,7 @@ package top.suyiiyii.sims.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -51,13 +52,14 @@ RecordController {
         return Result.success(recordDtos);
     }
 
-    @AuthAccess(allowRoles = {"user"})
+    @AuthAccess(allowRoles = {"user","admin"})
     @Operation(summary = "获取自己的奖惩记录")
     @GetMapping("/record")
     public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           HttpServletRequest request) {
-        String token = (String) request.getAttribute("token");
+        HttpSession session = request.getSession();
+        String token = (String) session.getAttribute("token");
         String userId = JwtUtils.extractUserId(token);
         List<RecordDto> recordDtos = new ArrayList<>();
         List<Record> records = recordService.getMyAllRecords(page, size, userId);
@@ -68,9 +70,7 @@ RecordController {
             recordDtos.add(recordDto);
         }
         return Result.success(recordDtos);
-
     }
-
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "更新单个奖惩记录")
     @PutMapping("/admin/record/{id}")
@@ -93,14 +93,16 @@ RecordController {
     @Operation(summary = "添加奖惩记录")
     @PostMapping("/admin/record")
     public Result<CommonResponse> adminAddRecord(@RequestBody RecordDto recordDto) {
-        Integer categoryId = categoryService.getIdBySubCategoryName(recordDto.getSubCategoryName());
-
-        Record record = modelMapper.map(recordDto, Record.class);
-        if (categoryId == null) {
-            Result.error("请选择奖惩类别，以及类型");
+//CategoryName不是奖励或者惩罚
+        if (!recordDto.getCategoryName().equals("奖励")
+                && !recordDto.getCategoryName().equals("惩罚")) {
+            return Result.error("请选择正确奖惩类别");
         }
-        record.setCategoryId(categoryId);
-        recordService.addRecord(record);
+        if (recordDto.getSubCategoryName().isEmpty()) {
+            return Result.error("请输入奖惩类型");
+        }
+
+        recordService.addRecord(recordDto);
         return Result.msg("添加成功");
     }
    @AuthAccess(allowRoles = {"admin"})

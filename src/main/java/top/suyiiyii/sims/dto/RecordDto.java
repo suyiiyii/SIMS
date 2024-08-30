@@ -12,7 +12,6 @@ public class RecordDto {
     // 用户ID
     private Integer studentId;
 
-
     private String categoryName;
 
     private String subCategoryName;

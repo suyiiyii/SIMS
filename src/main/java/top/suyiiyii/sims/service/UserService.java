@@ -92,7 +92,6 @@ public class UserService {
             throw new ServiceException("组别不能为空");
         }
         User user = modelMapper.map(req, User.class);
-
         mpUserMapper.insert(user);
         user = mpUserMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, req.getUsername()));
         rbacService.addRoleWithUserId(user.getId(), "user");

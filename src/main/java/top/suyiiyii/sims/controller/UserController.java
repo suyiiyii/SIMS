@@ -3,6 +3,7 @@ package top.suyiiyii.sims.controller;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Max;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class UserController {
 
     @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/login")
-    public Result<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    public Result<LoginResponse> login(@RequestBody LoginRequest request,HttpServletRequest httpServletRequest) {
         log.info("login request:{}", request);
 
         if (StrUtil.isBlank(request.getUsername()) || StrUtil.isBlank(request.getPassword())) {
@@ -53,6 +54,8 @@ public class UserController {
         }
         LoginResponse response = new LoginResponse();
         response.setToken(token);
+        HttpSession session = httpServletRequest.getSession();
+        session.setAttribute("token",token);
         return Result.success(response);
     }
     @AuthAccess(allowRoles = {"guest"})
