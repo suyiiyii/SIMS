@@ -3,6 +3,7 @@ package top.suyiiyii.sims.controller;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.Max;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,6 @@ public class UserController {
         response.setToken(token);
         return Result.success(response);
     }
-
     @AuthAccess(allowRoles = {"guest"})
     @PostMapping("/user/register")
     public Result<CommonResponse> register(@RequestBody RegisterRequest request) {
@@ -113,7 +113,6 @@ public class UserController {
         private String username;
         private Integer studentId;
         private String password;
-
         private String email;
         private String grade;
         private String userGroup;

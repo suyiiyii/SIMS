@@ -43,7 +43,6 @@ RecordController {
         List<Record> records = recordService.getAllRecords(page, size);
         List<RecordDto> recordDtos = new ArrayList<>();
         for (Record record : records) {
-
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
@@ -66,8 +65,6 @@ RecordController {
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
-
-
             recordDtos.add(recordDto);
         }
         return Result.success(recordDtos);
@@ -106,7 +103,7 @@ RecordController {
         recordService.addRecord(record);
         return Result.msg("添加成功");
     }
-    @AuthAccess(allowRoles = {"admin"})
+   @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "模糊查询奖惩记录")
     @GetMapping("/admin/likeRecords")
     public Result<List<RecordDto>> searchRecords(

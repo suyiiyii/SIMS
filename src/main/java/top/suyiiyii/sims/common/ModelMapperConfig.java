@@ -5,7 +5,6 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.suyiiyii.sims.dto.RecordDto;
-import top.suyiiyii.sims.dto.UserRecordDto;
 
 /**
  * @Author tortoise
