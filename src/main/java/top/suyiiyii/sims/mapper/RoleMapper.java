@@ -16,14 +16,6 @@ import java.util.List;
  */
 @Mapper
 public interface RoleMapper {
-    @Insert("INSERT INTO role(name) VALUES(#{name}")
-    void addRole(String name);
-
-    @Delete("DELETE FROM role WHERE name=#{name}")
-    void deleteRole(String name);
-
-    @Update("UPDATE role SET name=#{newName} WHERE name=#{name}")
-    void updateRole(String name, String newName);
 
     /**
      * @param
@@ -32,25 +24,25 @@ public interface RoleMapper {
      * @Description: TODO 查询用户信息
      * @return: java.util.List<top.suyiiyii.sims.entity.User>
      */
-    @Select("SELECT u.username, u.name, u.userId, r.role_name " +
+    @Select("SELECT u.username, u.student_id, r.role_name " +
             "FROM user u " +
-            "LEFT JOIN user_role ur ON u.user_id = ur.user_id " +
-            "LEFT JOIN role r ON ur.role_id = r.role_id")
+            "LEFT JOIN user_role ur ON u.student_id = ur.user_id " +
+            "LEFT JOIN role r ON ur.role_id = r.id")
     @Results({
             @Result(property = "username", column = "username"),
-            @Result(property = "name", column = "name"),
+
             @Result(property = "userId", column = "userId"),
             @Result(property = "group", column = "group"),
-            @Result(property = "roles", column = "role_name", many = @Many(select = "selectRolesByUser"))
+            @Result(property = "roles", column = "role_name", many = @Many(select = "selectRolesById"))
     })
     List<User> selectAllUsersWithRoles();
 
     // 根据用户ID查询角色
     @Select("SELECT role_id, role_name " +
             "FROM role " +
-            "WHERE role_id IN " +
-            "(SELECT role_id FROM user_role WHERE user_id = #{user_id})")
-    List<Role> selectRolesById(@Param("user_id") int id);
+            "WHERE id IN " +
+            "(SELECT role_id FROM user_role WHERE user_id = #{student_id})")
+    List<Role> selectRolesById(@Param("student_id") int id);
 
     @Select("SELECT role_name FROM role WHERE role_id=#{roleId}")
     List<String> selectRoleNamesByRoleId(Integer roleId);
@@ -62,4 +54,10 @@ public interface RoleMapper {
     Integer getIdByrolename(String roleName);
 @Select("SELECT student_id FROM user WHERE username=#{username}")
     Integer getStudentIdByUsername(String username);
+
+    @Select("SELECT role_name " +
+            "FROM role " +
+            "WHERE id IN " +
+            "(SELECT role_id FROM user_role WHERE user_id = #{id})")
+    List<String> getRolesById(int id);
 }

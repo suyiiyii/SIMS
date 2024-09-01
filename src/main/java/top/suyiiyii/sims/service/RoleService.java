@@ -32,8 +32,8 @@ public class RoleService {
      * @Description: TODO 查看自己身份
      * @return: java.util.List<top.suyiiyii.sims.entity.Role>
      */
-    public List<Role> selectRolesById(int id) {
-        return roleMapper.selectRolesById(id);
+    public List<String> getRolesById(int id) {
+        return roleMapper.getRolesById(id);
     }
 
 
