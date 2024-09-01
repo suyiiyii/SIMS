@@ -77,6 +77,10 @@ RecordController {
     @PutMapping("/admin/record/{id}")
     public Result<CommonResponse> adminUpdateRecord(@PathVariable Integer id, @RequestBody RecordDto recordDto) {
         Record record = modelMapper.map(recordDto, Record.class);
+        Integer i = recordService.IsRecord(id);
+        if(i==null) {
+            throw new RuntimeException("该记录不存在");
+        }
         recordService.updateRecord(record, id);
         return Result.msg("修改成功");
     }
@@ -85,6 +89,10 @@ RecordController {
     @Operation(summary = "删除单个奖惩记录")
     @DeleteMapping("/admin/record/{id}")
     public Result<CommonResponse> adminDeleteRecord(@PathVariable Integer id) {
+        Integer i = recordService.IsRecord(id);
+        if(i==null) {
+            throw new RuntimeException("该记录不存在");
+        }
         recordService.deleteRecord(id);
         return Result.msg("删除成功");
     }

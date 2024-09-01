@@ -80,4 +80,8 @@ public class RecordService {
     public List<Record> getRecordsById(int page, int size, Integer sid) {
         return recordMapper.getRecordsById(page, size, sid);
     }
+
+    public Integer IsRecord(Integer id) {
+        return recordMapper.IsRecord(id);
+    }
 }
