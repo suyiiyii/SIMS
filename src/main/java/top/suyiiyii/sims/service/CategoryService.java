@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.suyiiyii.sims.mapper.CategoryMapper;
 
+import java.util.List;
+
 /**
  * @Author tortoise
  * @Date 2024/8/16 23:32
@@ -28,11 +30,11 @@ public class CategoryService {
 
 
 
-    public Integer getIdByCategoryName(String categoryName) {
+    public List<Integer> getIdByCategoryName(String categoryName) {
         return categoryMapper.getIdByCategoryName(categoryName);
     }
 
-    public String IsSubCategoryName(String subCategoryName) {
-        return categoryMapper.IsSubCategoryName(subCategoryName);
-    }
+
+
+
 }

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RecordDto {
 
+    //
+    private Integer id;
     // 用户ID
     private Integer studentId;
 

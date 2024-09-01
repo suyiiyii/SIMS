@@ -19,6 +19,7 @@ import top.suyiiyii.sims.service.UserService;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -52,7 +53,7 @@ RecordController {
         return Result.success(recordDtos);
     }
 
-    @AuthAccess(allowRoles = {"user","admin"})
+    @AuthAccess(allowRoles = {"user"})
     @Operation(summary = "获取自己的奖惩记录")
     @GetMapping("/record")
     public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
@@ -112,10 +113,12 @@ RecordController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             String username,Integer studentId, String userGroup, String grade,String roleName) {
-        Integer s1=studentId;
+        Integer s1;
         List<Integer> studentIds = new ArrayList<>();
         List<Record> records=new ArrayList<>();
-        studentIds.add(studentId);
+        if(studentId!=null) {
+            studentIds.add(studentId);
+        }
         if(roleName!="") {
             //rolename查用户id
             Integer userId = roleService.getIdByrolename(roleName);
@@ -134,10 +137,88 @@ RecordController {
         List<RecordDto> RecordDtos = new ArrayList<>();
         for (Record record : records) {
             RecordDto RecordDto = modelMapper.map(record, RecordDto.class);
+            RecordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
+            RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             RecordDtos.add(RecordDto);
         }
         return Result.success(RecordDtos);
-
+    }
+    @AuthAccess(allowRoles = {"admin"})
+    @Operation(summary = "筛选查询奖惩记录")
+    @GetMapping("/admin/screenRecords")
+    public Result<List<RecordDto>> screenRecords(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            String categoryName) {
+        List<Integer> studentIds = new ArrayList<>();
+        //CategoryName不是奖励或者惩罚
+        if (!categoryName.equals("奖励")
+                && !categoryName.equals("惩罚")) {
+            return Result.error("请选择正确奖惩类别");
+        }
+        List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
+        for (Integer i : idByCategoryName) {
+            Integer sid = recordService.getSidByCategoryId(i);
+            studentIds.add(sid);
+        }
+        List<Record> records=new ArrayList<>();
+        HashSet<Integer> studentIds1= new HashSet<>(studentIds);
+        for (Integer Sid : studentIds1) {
+            if(Sid!=null){
+                records.addAll(recordService.getRecordsById(page,size,Sid));
+            }
+        }
+        List<RecordDto> RecordDtos = new ArrayList<>();
+        for (Record record : records) {
+            RecordDto RecordDto = modelMapper.map(record, RecordDto.class);
+            RecordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
+            RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
+            RecordDtos.add(RecordDto);
+        }
+        return Result.success(RecordDtos);
     }
 
+    @AuthAccess(allowRoles = {"user","admin"})
+    @Operation(summary = "用户筛选查询奖惩记录")
+    @GetMapping("/screenRecords")
+    public Result<List<RecordDto>> screenRecords1(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            String categoryName,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String token = (String) session.getAttribute("token");
+        String userId = JwtUtils.extractUserId(token);
+        if (userId==null){
+            throw new RuntimeException("请先登录");
+        }
+        List<Integer> studentIds = new ArrayList<>();
+        //CategoryName不是奖励或者惩罚
+        if (!categoryName.equals("奖励")
+                && !categoryName.equals("惩罚")) {
+            return Result.error("请选择正确奖惩类别");
+        }
+        List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
+        for (Integer i : idByCategoryName) {
+            Integer sid = recordService.getSidByCategoryId(i);
+            if(sid!=null) {
+                studentIds.add(sid);
+            }
+        }
+        List<Record> records=new ArrayList<>();
+        HashSet<Integer> studentIds1= new HashSet<>(studentIds);
+        for (Integer Sid : studentIds1) {
+            Integer studentId1 =userService.getStudentIdByUserId(Integer.valueOf(userId));
+            if (studentId1!= null && studentId1.equals(Sid)) {
+                records.addAll(recordService.getRecordsById(page, size, Sid));
+            }
+        }
+        List<RecordDto> RecordDtos = new ArrayList<>();
+        for (Record record : records) {
+            RecordDto RecordDto = modelMapper.map(record, RecordDto.class);
+            RecordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
+            RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
+            RecordDtos.add(RecordDto);
+        }
+        return Result.success(RecordDtos);
+    }
 }

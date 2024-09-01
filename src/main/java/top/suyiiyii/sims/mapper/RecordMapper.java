@@ -72,4 +72,11 @@ public interface RecordMapper {
             @Param("userGroup") String userGroup,
             @Param("grade") String grade
     );
+
+
+
+@Select("select student_id from record where category_id = #{i}")
+    Integer getSidByCategoryId(Integer i);
+@Select("SELECT * FROM record WHERE student_id = #{sid} LIMIT #{page},#{size}")
+    List<Record> getRecordsById(int page, int size, Integer sid);
 }

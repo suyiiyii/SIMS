@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 /**
  * @Author tortoise
  * @Date 2024/8/16 23:31
@@ -15,16 +17,16 @@ import org.apache.ibatis.annotations.Update;
  */
 @Mapper
 public interface CategoryMapper {
-    @Select("SELECT * FROM reward_punishment_category WHERE category_id=#{id}")
+    @Select("SELECT category_name FROM reward_punishment_category WHERE category_id=#{id}")
     String getCategoryName(Integer categoryId);
 
-    @Select("SELECT category_name FROM reward_punishment_category WHERE category_id=#{categoryId}")
+    @Select("SELECT sub_category_name FROM reward_punishment_category WHERE category_id=#{categoryId}")
     String getSubCategoryName(Integer categoryId);
 
     @Select("SELECT id FROM reward_punishment_category WHERE sub_category_name=#{subCategoryName}")
     Integer getIdBySubCategoryName(String subCategoryName);
     @Select("SELECT category_id FROM reward_punishment_category WHERE category_name=#{categoryName}")
-    Integer getIdByCategoryName(String categoryName);
+    List<Integer> getIdByCategoryName(String categoryName);
     @Select("SELECT sub_category_name FROM reward_punishment_category WHERE sub_category_name=#{subCategoryName}")
     String IsSubCategoryName(String subCategoryName);
 @Insert("INSERT INTO reward_punishment_category (category_name, sub_category_name) VALUES (#{categoryName}, #{subCategoryName})")

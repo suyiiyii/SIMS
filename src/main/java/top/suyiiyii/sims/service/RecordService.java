@@ -70,4 +70,14 @@ public class RecordService {
     public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {
         return recordMapper.getRecordsLike(page, size, studentId, userGroup,grade);
     }
+
+
+
+    public  Integer getSidByCategoryId(Integer i) {
+        return recordMapper.getSidByCategoryId(i);
+    }
+
+    public List<Record> getRecordsById(int page, int size, Integer sid) {
+        return recordMapper.getRecordsById(page, size, sid);
+    }
 }
