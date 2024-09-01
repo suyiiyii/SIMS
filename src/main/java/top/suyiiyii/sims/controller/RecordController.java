@@ -3,6 +3,7 @@ package top.suyiiyii.sims.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -120,13 +121,16 @@ RecordController {
     public Result<List<RecordDto>> searchRecords(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            String username,Integer studentId, String userGroup, String grade,String roleName) {
+            SearchRequest searchRequest) {
+
         Integer s1;
         List<Integer> studentIds = new ArrayList<>();
         List<Record> records=new ArrayList<>();
+       Integer studentId = searchRequest.getStudentId();
         if(studentId!=null) {
             studentIds.add(studentId);
         }
+       String roleName = searchRequest.getRoleName();
         if(roleName!="") {
             //rolename查用户id
             Integer userId = roleService.getIdByrolename(roleName);
@@ -134,13 +138,14 @@ RecordController {
           s1 = userService.getStudentIdByUserId(userId);
             studentIds.add(s1);
         }
+       String username = searchRequest.getUsername();
         if(username!="") {
             //username查用户StudentId
             s1= roleService.getStudentIdByUsername(username);
             studentIds.add(s1);
         }
         for (Integer Sid : studentIds) {
-            records.addAll(recordService.getRecordsLike(page,size,Sid,userGroup,grade));
+            records.addAll(recordService.getRecordsLike(page,size,Sid,searchRequest.getUserGroup(),searchRequest.getGrade()));
         }
         List<RecordDto> RecordDtos = new ArrayList<>();
         for (Record record : records) {
@@ -228,5 +233,13 @@ RecordController {
             RecordDtos.add(RecordDto);
         }
         return Result.success(RecordDtos);
+    }
+    @Data
+    public static class SearchRequest {
+        private String username;
+        private Integer studentId;
+        private String grade;
+        private String userGroup;
+        private String roleName;
     }
 }
