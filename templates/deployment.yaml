@@ -47,4 +47,26 @@ spec:
             secretKeyRef:
               name: secret
               key: jwt.secret
+        - name: S3_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: S3.ENDPOINT
+        - name: S3_BUCKET
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: S3.BUCKET
+        - name: S3_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: S3.ACCESS_KEY
+        - name: S3_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secret
+              key: S3.SECRET_KEY
+              
+
 status: {}

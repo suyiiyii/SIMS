@@ -10,6 +10,14 @@ spring:
     driverClassName: ""
 jwt:
   secret: ""
+
+S3:
+  ENDPOINT: ""
+  BUCKET: ""
+  ACCESS_KEY: ""
+  SECRET_KEY: ""
+
+
 replicaCount: 1
 image:
   repository: ghcr.io/suyiiyii/sims
