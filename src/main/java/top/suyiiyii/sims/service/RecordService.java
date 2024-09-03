@@ -52,10 +52,11 @@ public class RecordService {
 
     public void addRecord(RecordDto recordDto) {
         //把recordDto转化成Record
+        recordDto.setId(null);
         Record record = modelMapper.map(recordDto, Record.class);
-        //查看数据库里面是否有这个类别
-        String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getCategoryName());
 
+        //查看数据库里面是否有这个类别
+        String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getSubCategoryName());
         if(subCategoryName == null) {
             //没有这个类别就加上
             categoryMapper.addsubcategory(recordDto.getCategoryName(), recordDto.getSubCategoryName());
