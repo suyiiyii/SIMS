@@ -23,7 +23,7 @@ image:
   repository: ghcr.io/suyiiyii/sims
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "240825-8d10add"
+  tag: "240903-94bf792"
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
@@ -41,7 +41,6 @@ image:
 # podLabels: {}
 # podSecurityContext: {}
 # # fsGroup: 2000
-
 # securityContext: {}
 # # capabilities:
 # #   drop:
@@ -49,7 +48,6 @@ image:
 # # readOnlyRootFilesystem: true
 # # runAsNonRoot: true
 # # runAsUser: 1000
-
 # service:
 #   type: ClusterIP
 #   port: 80
@@ -79,7 +77,6 @@ image:
 # # requests:
 # #   cpu: 100m
 # #   memory: 128Mi
-
 # livenessProbe:
 #   httpGet:
 #     path: /
@@ -100,13 +97,11 @@ image:
 # #   secret:
 # #     secretName: mysecret·
 # #     optional: false
-
 # # Additional volumeMounts on the output Deployment definition.
 # volumeMounts: []
 # # - name: foo
 # #   mountPath: "/etc/foo"
 # #   readOnly: true
-
 # nodeSelector: {}
 # tolerations: []
 # affinity: {}
