@@ -57,7 +57,4 @@ public class JwtInterceptor implements HandlerInterceptor {
         request.setAttribute("userId", userId);
         return true;
     }
-    public static  int getUserIdFromReq(HttpServletRequest request){
-        return (int) request.getAttribute("userId");
-    }
 }
