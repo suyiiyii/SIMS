@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
+import top.suyiiyii.sims.common.JwtInterceptor;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.UserDto;
@@ -100,8 +101,9 @@ public class UserController {
     @Operation(description = "获取当前用户信息")
     @AuthAccess(allowRoles = {"user"})
     @GetMapping("/user/me")
-    public Result<UserDto> getSelf() {
-        UserDto user = userService.findUser(0);
+    public Result<UserDto> getSelf(HttpServletRequest request) {
+        int userId = JwtInterceptor.getUserIdFromReq(request);
+        UserDto user = userService.findUser(userId);
         return Result.success(user);
     }
 
