@@ -78,24 +78,8 @@ public class UserService {
     public void register(UserController.RegisterRequest req) {
 
         User dbUser = userMapper.selectByUserId(req.getStudentId());
-
-        if (req.getUsername() == null || req.getUsername().equals("")) {
-            throw new ServiceException("用户名不能为空");
-        }
         if (dbUser != null) {
             throw new ServiceException("账号已经存在");
-        }
-        if (req.getStudentId() == null || req.getStudentId().equals("")) {
-            throw new ServiceException("学号不能为空");
-        }
-        if (req.getPassword() == null || req.getPassword().equals("")) {
-            throw new ServiceException("密码不能为空");
-        }
-        if (req.getEmail() == null || req.getEmail().equals("")) {
-            throw new ServiceException("邮箱不能为空");
-        }
-        if (req.getUserGroup() == null || req.getUserGroup().equals("")) {
-            throw new ServiceException("组别不能为空");
         }
         User user = modelMapper.map(req, User.class);
 
