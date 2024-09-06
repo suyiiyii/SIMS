@@ -47,6 +47,7 @@ RecordController {
         List<RecordDto> recordDtos = new ArrayList<>();
         for (Record record : records) {
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
+            recordDto.setId(record.getId());
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDtos.add(recordDto);
@@ -67,6 +68,7 @@ RecordController {
         List<Record> records = recordService.getMyAllRecords(page, size, userId);
         for (Record record : records) {
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
+            recordDto.setId(record.getId());
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDtos.add(recordDto);
