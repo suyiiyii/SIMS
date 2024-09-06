@@ -76,7 +76,7 @@ public interface RecordMapper {
 
 
 @Select("select student_id from record where category_id = #{i}")
-    Integer getSidByCategoryId(Integer i);
+    List<Integer> getSidByCategoryId(Integer i);
 @Select("SELECT * FROM record WHERE student_id = #{sid} LIMIT #{page},#{size}")
     List<Record> getRecordsById(int page, int size, Integer sid);
 @Select("SELECT id FROM record WHERE id = #{id}")

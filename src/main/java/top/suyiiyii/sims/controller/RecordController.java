@@ -173,8 +173,8 @@ RecordController {
         }
         List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
         for (Integer i : idByCategoryName) {
-            Integer sid = recordService.getSidByCategoryId(i);
-            studentIds.add(sid);
+            List<Integer> sid = recordService.getSidByCategoryId(i);
+            studentIds.addAll(sid);
         }
         List<Record> records=new ArrayList<>();
         HashSet<Integer> studentIds1= new HashSet<>(studentIds);
@@ -214,9 +214,9 @@ RecordController {
         }
         List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
         for (Integer i : idByCategoryName) {
-            Integer sid = recordService.getSidByCategoryId(i);
+            List<Integer> sid = recordService.getSidByCategoryId(i);
             if(sid!=null) {
-                studentIds.add(sid);
+                studentIds.addAll(sid);
             }
         }
         List<Record> records=new ArrayList<>();

@@ -74,7 +74,7 @@ public class RecordService {
 
 
 
-    public  Integer getSidByCategoryId(Integer i) {
+    public  List<Integer> getSidByCategoryId(Integer i) {
         return recordMapper.getSidByCategoryId(i);
     }
 
