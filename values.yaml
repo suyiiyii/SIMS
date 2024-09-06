@@ -20,7 +20,7 @@ image:
   repository: ghcr.io/suyiiyii/sims
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "240905-4579dbd"
+  tag: "240906-2024c5e"
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
