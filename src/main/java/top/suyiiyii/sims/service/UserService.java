@@ -136,4 +136,8 @@ public class UserService {
     public List<Role> selectRolesById(Integer studentId) {
         return roleMapper.selectRolesById(studentId);
     }
+
+    public Integer getStudentIdByUserId(Integer userId) {
+        return userMapper.getStudentIdByUserId(userId);
+    }
 }
