@@ -48,11 +48,16 @@ public class JwtInterceptor implements HandlerInterceptor {
             }
         } catch (TokenExpiredException e) {
             throw new ServiceException("401", "登录已过期，请重新登录");
+        } catch (Exception e) {
+            throw new ServiceException("401", "token验证失败，请重新登录");
         }
         // 获取 token 中的 user id
         Integer userId = Integer.parseInt(Objects.requireNonNull(JwtUtils.extractUserId(token)));
 
         request.setAttribute("userId", userId);
         return true;
+    }
+    public static  int getUserIdFromReq(HttpServletRequest request){
+        return (int) request.getAttribute("userId");
     }
 }

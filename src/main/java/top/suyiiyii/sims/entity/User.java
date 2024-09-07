@@ -39,10 +39,8 @@ public class User {
     @UniqueIndex
     @Column(comment = "邮箱", notNull = true)
     private String email;
-    @UniqueIndex
     @Column(comment = "年级", notNull = true)
     private String grade;
-    @UniqueIndex
     @Column(comment = "用户所属团队", notNull = true)
     private String userGroup;
 }
