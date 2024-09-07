@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
+import top.suyiiyii.sims.common.JwtInterceptor;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
@@ -60,11 +61,9 @@ RecordController {
     public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("token");
-        String userId = JwtUtils.extractUserId(token);
+        int userId = JwtInterceptor.getUserIdFromReq(request);
         List<RecordDto> recordDtos = new ArrayList<>();
-        List<Record> records = recordService.getMyAllRecords(page, size, userId);
+        List<Record> records = recordService.getMyAllRecords(page, size,String.valueOf(userId));
         for (Record record : records) {
             RecordDto recordDto = modelMapper.map(record, RecordDto.class);
             recordDto.setCategoryName(categoryService.getCategoryName(record.getCategoryId()));
@@ -198,12 +197,9 @@ RecordController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             String categoryName,HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("token");
-        String userId = JwtUtils.extractUserId(token);
-        if (userId==null){
-            throw new RuntimeException("请先登录");
-        }
+
+        int userId = JwtInterceptor.getUserIdFromReq(request);
+
         List<Integer> studentIds = new ArrayList<>();
         //CategoryName不是奖励或者惩罚
         if (!categoryName.equals("奖励")

@@ -78,6 +78,13 @@ public class UserService {
         user = mpUserMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, req.getUsername()));
         rbacService.addRoleWithUserId(user.getId(), "user");
     }
+    public User selectByUsername(String username) {
+        return userMapper.selectByUserName(username);
+    }
+
+    public void updatePassword(User user) {
+        userMapper.updatePassword(user);
+    }
 
 
     public List<UserDto> findAllUsers() {
@@ -99,18 +106,19 @@ public class UserService {
 
     public UserDto findUser(Integer id) {
 
-        UserDto UserDto = new UserDto();
+        UserDto userDto = new UserDto();
         User user = userMapper.selectById(id);
         if (user == null) {
             throw new ServiceException("用户不存在");
         }
-        UserDto.setUserId(user.getId());
-        UserDto.setUsername(user.getUsername());
-        UserDto.setGrade(user.getGrade());
-        UserDto.setUserGroup(user.getUserGroup());
-        UserDto.setRoles(new ArrayList<>());
+        userDto.setUserId(user.getId());
+        userDto.setUsername(user.getUsername());
+        userDto.setGrade(user.getGrade());
+        userDto.setUserGroup(user.getUserGroup());
+        userDto.setStudentId(user.getStudentId());
+        userDto.setRoles(new ArrayList<>());
         //TODO: 获取用户角色
-        return UserDto;
+        return userDto;
     }
 
     public User selectByUserId(Integer studentId) {
@@ -119,5 +127,7 @@ public class UserService {
 
     public List<Role> selectRolesById(Integer studentId) {
         return roleMapper.selectRolesById(studentId);
+    }    public Integer getStudentIdByUserId(Integer userId) {
+        return userMapper.getStudentIdByUserId(userId);
     }
 }
