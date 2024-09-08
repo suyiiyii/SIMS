@@ -1,6 +1,9 @@
 package top.suyiiyii.sims.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import top.suyiiyii.sims.entity.User;
 
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
  * @Version 1.0
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     private Integer userId;
     private Integer studentId;
@@ -20,4 +25,12 @@ public class UserDto {
     private String grade;
     private String userGroup;
     private List<String> roles; // 角色名称列表
+
+    public UserDto(User user) {
+        this.userId = user.getId();
+        this.studentId = user.getStudentId();
+        this.username = user.getUsername();
+        this.grade = user.getGrade();
+        this.userGroup = user.getUserGroup();
+    }
 }
