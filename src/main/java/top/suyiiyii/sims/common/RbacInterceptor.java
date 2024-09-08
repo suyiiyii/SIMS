@@ -29,9 +29,7 @@ public class RbacInterceptor implements HandlerInterceptor {
         }
         // 获取用户角色
         List<String> roles = getUserRole(request).stream().map(Role::getRoleName).toList();
-
         List<String> allowRoles = null;
-
         // 获取当前请求的方法上的 AuthAccess 注解，从而获取允许访问的角色
         if (handler instanceof HandlerMethod) {
             AuthAccess annotation = ((HandlerMethod) handler).getMethodAnnotation(AuthAccess.class);

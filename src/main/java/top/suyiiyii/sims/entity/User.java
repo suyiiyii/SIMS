@@ -1,8 +1,10 @@
 package top.suyiiyii.sims.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import com.tangzc.mpe.autotable.annotation.Column;
 import com.tangzc.mpe.autotable.annotation.ColumnId;
+
 import com.tangzc.mpe.autotable.annotation.Table;
 import com.tangzc.mpe.autotable.annotation.UniqueIndex;
 import lombok.AllArgsConstructor;
@@ -22,7 +24,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @ColumnId(mode = IdType.AUTO, comment = "id主键")
+
     private Integer id;
     @UniqueIndex
     @Column(comment = "学生id", notNull = true)

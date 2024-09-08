@@ -1,5 +1,6 @@
 package top.suyiiyii.sims.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Attachment {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
     private Integer recordId;
     // 文件路径

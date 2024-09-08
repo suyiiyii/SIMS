@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 public class UserDto {
     private Integer userId;
+    private Integer studentId;
     private String username;
     private String grade;
     private String userGroup;

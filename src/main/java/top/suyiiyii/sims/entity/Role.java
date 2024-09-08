@@ -21,7 +21,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
+
     @ColumnId(mode = IdType.AUTO, comment = "id主键")
+
     private Integer id;
     //管理员，普通用户，组员，组长，队长
     @ColumnNotNull

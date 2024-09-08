@@ -26,14 +26,14 @@ public class RoleService {
     }
 
     /**
-     * @param Id
+     * @param
      * @author: tortoise
      * @date: 2024/8/14 14:39
      * @Description: TODO 查看自己身份
      * @return: java.util.List<top.suyiiyii.sims.entity.Role>
      */
-    public List<Role> selectRolesById(int id) {
-        return roleMapper.selectRolesById(id);
+    public List<String> getRolesById(int id) {
+        return roleMapper.getRolesById(id);
     }
 
 
@@ -45,5 +45,13 @@ public class RoleService {
             }
         }
         return false;
+    }
+
+    public Integer getIdByrolename(String roleName) {
+        return roleMapper.getIdByrolename(roleName);
+    }
+
+    public Integer getStudentIdByUsername(String username) {
+        return roleMapper.getStudentIdByUsername(username);
     }
 }

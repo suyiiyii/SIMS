@@ -22,7 +22,9 @@ public interface UserMapper extends BaseMapper<User> {
      * @param user 新用户对象
      * @return 影响的行数
      */
+
     @Insert("insert INTO user (id,student_id, username, password, username, email, user_group) VALUES (#{id},#{studentId}, #{username}, #{password}, #{name}, #{email}, #{userGroup})")
+
     int addUser(User user);
 
     /**
@@ -43,7 +45,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("UPDATE user SET " +
             "student_id = #{userId}, " +
             "username = #{username}, " +
+
             "username = #{name}, " +
+
             "email = #{email}, " +
             "grade = #{grade}, " +
             "user_group = #{group} " +
@@ -56,7 +60,9 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
+
     @Select("SELECT id, student_id, username, password, username, email,grade,user_group from user WHERE student_id = #{id}")
+
     User selectByUserId(Integer id);
 
     /**
@@ -65,7 +71,9 @@ public interface UserMapper extends BaseMapper<User> {
      * @param
      * @return 用户对象
      */
+
     @Select("SELECT id, student_id, username, password, username, email,grade, user_group from user WHERE id = #{id}")
+
     User selectById(Integer id);
 
     /**
@@ -73,7 +81,9 @@ public interface UserMapper extends BaseMapper<User> {
      *
      * @return 用户列表
      */
+
     @Select("SELECT id, student_id, username, password, username, email, grade, user_group FROM user")
+
     List<User> selectAll();
 
     @Select("select * from user where username = #{username}")
@@ -82,6 +92,10 @@ public interface UserMapper extends BaseMapper<User> {
     @Update("update user set password = #{password} where username = #{username}")
     void updatePassword(User user);
 
+
     @Select("select student_id from user where id = #{userId}")
     String getStudentIdById(String userId);
+
+    @Select("select student_id from user where id = #{userId}")
+    Integer getStudentIdByUserId(Integer userId);
 }

@@ -42,7 +42,7 @@ public class JwtUtils {
     public static String createToken(String userId, String sign) {
         return JWT.create()
                 .withAudience(userId)
-                .withExpiresAt(DateUtil.offsetHour(new Date(), 2))
+                .withExpiresAt(DateUtil.offsetWeek(new Date(), 2))
                 .sign(Algorithm.HMAC256(sign));
         // 设置令牌过期时间为2小时
     }

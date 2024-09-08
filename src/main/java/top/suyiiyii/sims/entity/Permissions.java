@@ -1,5 +1,6 @@
 package top.suyiiyii.sims.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Permissions {
-    @TableId("id")
+    @TableId(type= IdType.AUTO)
     private Integer id;
     //权限id
     private Integer permissionId;
