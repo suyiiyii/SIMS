@@ -12,9 +12,12 @@ public class CorsConfiguration {
     public CorsFilter corsFilter() {
         org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
         config.addAllowedOrigin("*");
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("POST");
         config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("OPTIONS");
 
 
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
