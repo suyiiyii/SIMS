@@ -103,7 +103,7 @@ public class RecordService {
         List<Integer> catIds = recordDtos.stream().map(RecordDto::getCategoryId).distinct().toList();
         List<RewardPunishmentCategory> categories = mpCategoryMapper.selectBatchIds(catIds);
         Map<Integer, RewardPunishmentCategory> catMap = categories.stream().collect(Collectors.toMap(RewardPunishmentCategory::getId, c -> c));
-        List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && catMap.get(c).getStatus() == null)).toList();
+        List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && (catMap.get(c).getStatus() == null || catMap.get(c).getStatus().equals("enable")))).toList();
         return recordDtos.stream().filter(r -> availableCatIds.contains(r.getCategoryId())).toList();
     }
 }
