@@ -47,7 +47,6 @@ public class RevokedController {
     CategoryService categoryService;
     @Autowired
     RecordService recordService;
-
     //TODO 普通成员向管理员申请撤销
     @AuthAccess(allowRoles = {"user"})
     @Operation(summary = "成员申请撤销")
