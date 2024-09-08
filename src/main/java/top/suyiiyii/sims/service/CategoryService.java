@@ -1,13 +1,16 @@
 package top.suyiiyii.sims.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.entity.RewardPunishmentCategory;
 import top.suyiiyii.sims.exception.ServiceException;
 import top.suyiiyii.sims.mapper.CategoryMapper;
 import top.suyiiyii.sims.mapper.MpCategoryMapper;
+import top.suyiiyii.sims.mapper.MpRecordMapper;
 
 import java.util.List;
 
@@ -26,6 +29,9 @@ public class CategoryService {
 
     @Autowired
     MpCategoryMapper mpCategoryMapper;
+
+    @Autowired
+    MpRecordMapper mpRecordMapper;
 
 
     public String getCategoryName(Integer id) {
@@ -67,10 +73,11 @@ public class CategoryService {
         mpCategoryMapper.updateById(category);
     }
 
-    public void deleteCategory(Integer id) {
+    public void deleteCategory(Integer id, Integer newId) {
         if (!mpCategoryMapper.exists(new LambdaQueryWrapper<RewardPunishmentCategory>().eq(RewardPunishmentCategory::getId, id))) {
             throw new ServiceException("该类别不存在");
         }
         mpCategoryMapper.deleteById(id);
+        mpRecordMapper.update(new LambdaUpdateWrapper<Record>().eq(Record::getCategoryId, id).set(Record::getCategoryId, newId));
     }
 }

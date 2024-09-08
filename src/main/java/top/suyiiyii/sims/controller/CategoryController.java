@@ -52,8 +52,9 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     @Operation(summary = "删除类别",description = "根据id删除类别")
     @AuthAccess(allowRoles = {"admin"})
-    public Result<String> deleteCategory(@PathVariable Integer id) {
-        categoryService.deleteCategory(id);
+    public Result<String> deleteCategory(@PathVariable Integer id,
+                                         @RequestParam Integer newId) {
+        categoryService.deleteCategory(id, newId);
         return Result.success("删除成功");
     }
 
