@@ -36,7 +36,7 @@ public class RewardPunishmentCategory {
     // 类别说明
     private String description;
 
-    // 类别状态
+    // 类别状态 null:正常 "disable":删除
     private String status;
 
 

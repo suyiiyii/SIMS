@@ -45,4 +45,9 @@ public class CategoryService {
         mpCategoryMapper.selectPage(pageObj, new LambdaQueryWrapper<>());
         return pageObj.getRecords();
     }
+
+    public List<RewardPunishmentCategory> getCateByIds(List<Integer> ids) {
+        return mpCategoryMapper.selectBatchIds(ids);
+    }
+
 }

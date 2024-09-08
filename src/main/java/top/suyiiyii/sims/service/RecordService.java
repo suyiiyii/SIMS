@@ -4,14 +4,17 @@ package top.suyiiyii.sims.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
+import top.suyiiyii.sims.entity.RewardPunishmentCategory;
 import top.suyiiyii.sims.mapper.CategoryMapper;
+import top.suyiiyii.sims.mapper.MpCategoryMapper;
 import top.suyiiyii.sims.mapper.RecordMapper;
 import top.suyiiyii.sims.mapper.UserMapper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author tortoise
@@ -31,6 +34,9 @@ public class RecordService {
     ModelMapper modelMapper;
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    MpCategoryMapper mpCategoryMapper;
+
     public List<Record> getAllRecords(Integer page, Integer size) {
 
         return recordMapper.getAllRecords(page, size);
@@ -57,7 +63,7 @@ public class RecordService {
 
         //查看数据库里面是否有这个类别
         String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getSubCategoryName());
-        if(subCategoryName == null) {
+        if (subCategoryName == null) {
             //没有这个类别就加上
             categoryMapper.addsubcategory(recordDto.getCategoryName(), recordDto.getSubCategoryName());
         }
@@ -69,12 +75,11 @@ public class RecordService {
     }
 
     public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {
-        return recordMapper.getRecordsLike(page, size, studentId, userGroup,grade);
+        return recordMapper.getRecordsLike(page, size, studentId, userGroup, grade);
     }
 
 
-
-    public  List<Integer> getSidByCategoryId(Integer i) {
+    public List<Integer> getSidByCategoryId(Integer i) {
         return recordMapper.getSidByCategoryId(i);
     }
 
@@ -84,5 +89,21 @@ public class RecordService {
 
     public Integer IsRecord(Integer id) {
         return recordMapper.IsRecord(id);
+    }
+
+    public List<Record> filterRecords(List<Record> records) {
+        List<Integer> catIds = records.stream().map(Record::getCategoryId).distinct().toList();
+        List<RewardPunishmentCategory> categories = mpCategoryMapper.selectBatchIds(catIds);
+        Map<Integer, RewardPunishmentCategory> catMap = categories.stream().collect(Collectors.toMap(RewardPunishmentCategory::getId, c -> c));
+        List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && catMap.get(c).getStatus() == null)).toList();
+        return records.stream().filter(r -> availableCatIds.contains(r.getCategoryId())).toList();
+    }
+
+    public List<RecordDto> filterRecordsDtos(List<RecordDto> recordDtos) {
+        List<Integer> catIds = recordDtos.stream().map(RecordDto::getCategoryId).distinct().toList();
+        List<RewardPunishmentCategory> categories = mpCategoryMapper.selectBatchIds(catIds);
+        Map<Integer, RewardPunishmentCategory> catMap = categories.stream().collect(Collectors.toMap(RewardPunishmentCategory::getId, c -> c));
+        List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && catMap.get(c).getStatus() == null)).toList();
+        return recordDtos.stream().filter(r -> availableCatIds.contains(r.getCategoryId())).toList();
     }
 }
