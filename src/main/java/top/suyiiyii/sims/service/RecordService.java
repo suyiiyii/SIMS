@@ -4,6 +4,7 @@ package top.suyiiyii.sims.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.entity.RewardPunishmentCategory;
@@ -63,7 +64,7 @@ public class RecordService {
 
         //查看数据库里面是否有这个类别
         String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getSubCategoryName());
-        if (subCategoryName == null) {
+        if(subCategoryName == null) {
             //没有这个类别就加上
             categoryMapper.addsubcategory(recordDto.getCategoryName(), recordDto.getSubCategoryName());
         }
@@ -75,11 +76,12 @@ public class RecordService {
     }
 
     public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {
-        return recordMapper.getRecordsLike(page, size, studentId, userGroup, grade);
+        return recordMapper.getRecordsLike(page, size, studentId, userGroup,grade);
     }
 
 
-    public List<Integer> getSidByCategoryId(Integer i) {
+
+    public  List<Integer> getSidByCategoryId(Integer i) {
         return recordMapper.getSidByCategoryId(i);
     }
 
@@ -116,5 +118,9 @@ public class RecordService {
         String revokeReason="申请撤销";
         Boolean isRevoked=true;
         recordMapper.Rupdate(id, reason,isRevoked,revokeReason,userId);
+    }
+
+    public Integer getCategoryIdById(Integer  id) {
+        return recordMapper.getCategoryIdById(id);
     }
 }

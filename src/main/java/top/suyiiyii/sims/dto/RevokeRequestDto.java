@@ -1,30 +1,26 @@
-package top.suyiiyii.sims.entity;
+package top.suyiiyii.sims.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.tangzc.mpe.autotable.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
  * @Author tortoise
- * @Date 2024/8/10 0:31
- * @PackageName:top.suyiiyii.sims.entity
- * @ClassName: RevokeRequest
- * @Description: 存储普通成员提出的奖惩撤销申请，并跟踪申请状态
+ * @Date 2024/9/8 21:34
+ * @PackageName:top.suyiiyii.sims.dto
+ * @ClassName: RevokeRequestDto
+ * @Description: TODO
  * @Version 1.0
  */
 @Data
-@Table
 @AllArgsConstructor
 @NoArgsConstructor
-public class RevokeRequest {
-    @TableId(type= IdType.AUTO)
+public class RevokeRequestDto {
     private Integer id;
-    private Integer recordId;
+    private String categoryName;
+    private String subCategoryName;
     private Integer userId;
     private String reason;
     private Long requestTime;
@@ -34,4 +30,3 @@ public class RevokeRequest {
     private String adminRemark;
 
 }
-

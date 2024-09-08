@@ -21,7 +21,6 @@ import top.suyiiyii.sims.mapper.RoleMapper;
  */
 @Service
 public class RevokedService {
-
     @Autowired
     MpRevRequestMapper mpRevRequestMapper;
 @Autowired

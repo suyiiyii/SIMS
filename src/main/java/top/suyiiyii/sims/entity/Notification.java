@@ -27,7 +27,7 @@ public class Notification {
     private String title;
     private String content;
     private Integer senderId;
-    private LocalDateTime createdAt;
+    private Long createdAt;
     private String status;
     private String type;
     private Integer targetUserId;
