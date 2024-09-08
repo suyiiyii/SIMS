@@ -48,7 +48,7 @@ public class RevokedController {
     //TODO 普通成员向管理员申请撤销
     @AuthAccess(allowRoles = {"user"})
     @Operation(summary = "成员申请撤销")
-    @PostMapping("/revoked")
+    @PostMapping("")
     public Result<CommonResponse> revoked(@RequestBody Request request) {
 
         if(request.getReason().isBlank()) {
@@ -64,7 +64,7 @@ public class RevokedController {
     //TODO 管理员查看所有撤销申请
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "管理员查看所有撤销申请")
-    @GetMapping("/revoked")
+    @GetMapping("")
     public Result<List<RevokeRequestDto>> revoked(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -80,12 +80,36 @@ public class RevokedController {
     }
     //TODO 管理员可以撤销某一成员的奖励或惩罚记录，需填写撤销原因，撤销备注
 
+    @AuthAccess(allowRoles = {"admin"})
+    @Operation(summary = "管理员处理撤销申请")
+    @PutMapping("/{id}")
+    public Result<CommonResponse> revoked( @PathVariable Integer id,RevokedRequest revokedRequest) {
+        if(revokedRequest.getAdminRemark().isBlank()) {
+            throw new ServiceException("撤销备注不能为空");
+        }
+        if(!"批准".equals(revokedRequest.getStatus()) && !"拒绝".equals(revokedRequest.getStatus()) ) {
+            throw new ServiceException("状态不合法");
+        }
 
+        revokedService.updateRevokeRequest(id,
+                revokedRequest.getStatus(),revokedRequest.getAdminRemark(),
+                revokedRequest.getReason(),revokedRequest.getHandleTime());
+//TODO 要加到记录里面去
+        return Result.success(CommonResponse.factory("申请成功"));
+
+    }
     @Data
     public static class Request {
         private Integer userId;
         private Integer recordId;
         private String reason;
         private Long requestTime;
+    }
+    @Data
+    public static class RevokedRequest {
+        private String status;
+        private String adminRemark;
+        private String reason;
+        private Long handleTime;
     }
 }

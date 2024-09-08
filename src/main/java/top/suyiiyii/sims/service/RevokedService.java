@@ -2,6 +2,7 @@ package top.suyiiyii.sims.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.suyiiyii.sims.controller.RevokedController;
 import top.suyiiyii.sims.entity.RevokeRequest;
 import top.suyiiyii.sims.mapper.MpRevRequestMapper;
 
@@ -28,5 +29,11 @@ public class RevokedService {
     }
         public List<RevokeRequest> getAll(int page, int size){
         return mpRevRequestMapper.selectList(page,size);
+    }
+
+
+    public void updateRevokeRequest(Integer id, String status, String adminRemark, String reason, Long handleTime) {
+
+        mpRevRequestMapper.update(id, status, adminRemark, reason, handleTime);
     }
 }
