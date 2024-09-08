@@ -2,7 +2,6 @@ package top.suyiiyii.sims.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import top.suyiiyii.sims.service.CategoryService;
 import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
-import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,7 +51,7 @@ RecordController {
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDtos.add(recordDto);
         }
-        return Result.success(recordDtos);
+        return Result.success(recordService.filterRecordsDtos(recordDtos));
     }
 
     @AuthAccess(allowRoles = {"user"})
@@ -72,7 +70,7 @@ RecordController {
             recordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             recordDtos.add(recordDto);
         }
-        return Result.success(recordDtos);
+        return Result.success(recordService.filterRecordsDtos(recordDtos));
     }
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "更新单个奖惩记录")
@@ -132,7 +130,7 @@ RecordController {
             studentIds.add(studentId);
         }
        String roleName = searchRequest.getRoleName();
-        if(roleName!="") {
+        if(!roleName.isEmpty()) {
             //rolename查用户id
             Integer userId = roleService.getIdByrolename(roleName);
          //     用户id查记录
@@ -140,7 +138,7 @@ RecordController {
             studentIds.add(s1);
         }
        String username = searchRequest.getUsername();
-        if(username!="") {
+        if(!username.isEmpty()) {
             //username查用户StudentId
             s1= roleService.getStudentIdByUsername(username);
             studentIds.add(s1);
@@ -155,7 +153,7 @@ RecordController {
             RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             RecordDtos.add(RecordDto);
         }
-        return Result.success(RecordDtos);
+        return Result.success(recordService.filterRecordsDtos(RecordDtos));
     }
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "筛选查询奖惩记录")
@@ -189,7 +187,7 @@ RecordController {
             RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             RecordDtos.add(RecordDto);
         }
-        return Result.success(RecordDtos);
+        return Result.success(recordService.filterRecordsDtos(RecordDtos));
     }
 
     @AuthAccess(allowRoles = {"user","admin"})
@@ -199,12 +197,7 @@ RecordController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             String categoryName,HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("token");
-        String userId = JwtUtils.extractUserId(token);
-        if (userId==null){
-            throw new RuntimeException("请先登录");
-        }
+        int userId = JwtInterceptor.getUserIdFromReq(request);
         List<Integer> studentIds = new ArrayList<>();
         //CategoryName不是奖励或者惩罚
         if (!categoryName.equals("奖励")
@@ -221,7 +214,7 @@ RecordController {
         List<Record> records=new ArrayList<>();
         HashSet<Integer> studentIds1= new HashSet<>(studentIds);
         for (Integer Sid : studentIds1) {
-            Integer studentId1 =userService.getStudentIdByUserId(Integer.valueOf(userId));
+            Integer studentId1 =userService.getStudentIdByUserId(userId);
             if (studentId1!= null && studentId1.equals(Sid)) {
                 records.addAll(recordService.getRecordsById(page, size, Sid));
             }
@@ -233,7 +226,7 @@ RecordController {
             RecordDto.setSubCategoryName(categoryService.getsubCategoryName(record.getCategoryId()));
             RecordDtos.add(RecordDto);
         }
-        return Result.success(RecordDtos);
+        return Result.success(recordService.filterRecordsDtos(RecordDtos));
     }
     @Data
     public static class SearchRequest {

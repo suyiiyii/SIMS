@@ -2,8 +2,9 @@ package top.suyiiyii.sims.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.tangzc.mpe.autotable.annotation.Column;
+import com.tangzc.autotable.annotation.ColumnNotNull;
 import com.tangzc.mpe.autotable.annotation.Table;
+import com.tangzc.mpe.autotable.annotation.UniqueIndex;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,15 +24,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RewardPunishmentCategory {
-    @TableId(type= IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Integer id;
-
     private Integer categoryId;
     // 类别名称
+    @ColumnNotNull
     private String categoryName;
+    @ColumnNotNull
+    @UniqueIndex
     private String subCategoryName;
     // 类别说明
     private String description;
+
+    // 类别状态 null:正常 "disable":删除
+    private String status;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

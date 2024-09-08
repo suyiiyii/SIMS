@@ -17,6 +17,8 @@ public class RecordDto {
     private String categoryName;
 
     private String subCategoryName;
+    // 类别id
+    private Integer categoryId;
     // 奖惩日期
     private Long date;
     // 奖惩内容
