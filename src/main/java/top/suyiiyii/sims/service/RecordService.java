@@ -85,4 +85,8 @@ public class RecordService {
     public Integer IsRecord(Integer id) {
         return recordMapper.IsRecord(id);
     }
+
+    public Integer getCategoryIdById(Integer  id) {
+        return recordMapper.getCategoryIdById(id);
+    }
 }

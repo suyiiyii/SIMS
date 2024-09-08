@@ -31,7 +31,7 @@ public class RevokedRecord {
     // 撤销原因
     private String reason;
     // 撤销时间
-    private LocalDateTime revokedTime;
+    private Long revokedTime;
 
 }
 

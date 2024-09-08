@@ -1,12 +1,27 @@
 package top.suyiiyii.sims.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import top.suyiiyii.sims.common.AuthAccess;
+import top.suyiiyii.sims.common.Result;
+import top.suyiiyii.sims.dto.CommonResponse;
+import top.suyiiyii.sims.dto.RecordDto;
+import top.suyiiyii.sims.dto.RevokeRequestDto;
+import top.suyiiyii.sims.entity.RevokeRequest;
+import top.suyiiyii.sims.exception.ServiceException;
+import top.suyiiyii.sims.service.CategoryService;
+import top.suyiiyii.sims.service.NotificationService;
+import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RevokedService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author tortoise
@@ -22,9 +37,55 @@ import top.suyiiyii.sims.service.RevokedService;
 public class RevokedController {
     @Autowired
     RevokedService revokedService;
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    NotificationService notificationService;
+    @Autowired
+    CategoryService categoryService;
+@Autowired
+    RecordService recordService;
     //TODO 普通成员向管理员申请撤销
+    @AuthAccess(allowRoles = {"user"})
+    @Operation(summary = "成员申请撤销")
+    @PostMapping("/revoked")
+    public Result<CommonResponse> revoked(@RequestBody Request request) {
 
+        if(request.getReason().isBlank()) {
+            throw new ServiceException("撤销原因不能为空");
+        }
+        RevokeRequest revokeRequest = modelMapper.map(request, RevokeRequest.class);
+
+        revokedService.addRevokeRequest(revokeRequest);
+        //发送通知给管理员
+        notificationService.addNotification(revokeRequest);
+        return Result.success(CommonResponse.factory("申请成功"));
+    }
     //TODO 管理员查看所有撤销申请
-
+    @AuthAccess(allowRoles = {"admin"})
+    @Operation(summary = "管理员查看所有撤销申请")
+    @GetMapping("/revoked")
+    public Result<List<RevokeRequestDto>> revoked(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<RevokeRequest> revokeRequests = revokedService.getAll(page, size);
+        List<RevokeRequestDto> revokeRequestDtos = new ArrayList<>();
+        for (RevokeRequest revokeRequest : revokeRequests) {
+            RevokeRequestDto revokeRequestDto = modelMapper.map(revokeRequest, RevokeRequestDto.class);
+            revokeRequestDto.setCategoryName(categoryService.getCategoryName(recordService.getCategoryIdById(revokeRequest.getRecordId())));
+            revokeRequestDto.setSubCategoryName(categoryService.getsubCategoryName(recordService.getCategoryIdById(revokeRequest.getRecordId())));
+            revokeRequestDtos.add(revokeRequestDto);
+        }
+        return Result.success(revokeRequestDtos);
+    }
     //TODO 管理员可以撤销某一成员的奖励或惩罚记录，需填写撤销原因，撤销备注
+
+
+    @Data
+    public static class Request {
+        private Integer userId;
+        private Integer recordId;
+        private String reason;
+        private Long requestTime;
+    }
 }

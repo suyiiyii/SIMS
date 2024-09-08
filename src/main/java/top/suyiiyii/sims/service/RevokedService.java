@@ -2,8 +2,10 @@ package top.suyiiyii.sims.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.suyiiyii.sims.mapper.MpRevRecordMapper;
-import top.suyiiyii.sims.mapper.RoleMapper;
+import top.suyiiyii.sims.entity.RevokeRequest;
+import top.suyiiyii.sims.mapper.MpRevRequestMapper;
+
+import java.util.List;
 
 /**
  * @Author tortoise
@@ -15,6 +17,16 @@ import top.suyiiyii.sims.mapper.RoleMapper;
  */
 @Service
 public class RevokedService {
+
     @Autowired
-    MpRevRecordMapper mpRevRecordMapper;
+    MpRevRequestMapper mpRevRequestMapper;
+
+    public void addRevokeRequest(RevokeRequest revokeRequest) {
+        revokeRequest.setStatus("待审核");
+        mpRevRequestMapper.insert(revokeRequest);
+
+    }
+        public List<RevokeRequest> getAll(int page, int size){
+        return mpRevRequestMapper.selectList(page,size);
+    }
 }
