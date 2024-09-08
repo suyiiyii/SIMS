@@ -62,9 +62,7 @@ RecordController {
     public Result<List<RecordDto>> record(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("token");
-        String userId = JwtUtils.extractUserId(token);
+        String userId = String.valueOf(JwtInterceptor.getUserIdFromReq(request));
         List<RecordDto> recordDtos = new ArrayList<>();
         List<Record> records = recordService.getMyAllRecords(page, size, userId);
         for (Record record : records) {

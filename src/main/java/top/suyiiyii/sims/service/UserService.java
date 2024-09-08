@@ -110,7 +110,8 @@ public class UserService {
         userDto.setUserGroup(user.getUserGroup());
         userDto.setStudentId(user.getStudentId());
         userDto.setRoles(new ArrayList<>());
-        //TODO: 获取用户角色
+        List<String> roles = roleMapper.getRolesById(id);
+        userDto.setRoles(roles);
         return userDto;
     }
 

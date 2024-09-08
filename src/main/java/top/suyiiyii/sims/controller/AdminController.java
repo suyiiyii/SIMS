@@ -55,9 +55,3 @@ public class AdminController {
     }
 
 }
-/**
- * request.setAttribute();lUsers();
- * return Result.success(userList);
- * }
- * }
- **/
