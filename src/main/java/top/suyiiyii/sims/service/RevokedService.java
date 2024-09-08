@@ -21,10 +21,11 @@ import top.suyiiyii.sims.mapper.RoleMapper;
  */
 @Service
 public class RevokedService {
+
     @Autowired
     MpRevRequestMapper mpRevRequestMapper;
-@Autowired
-MpRevRecord mpRevRecord;
+    @Autowired
+    MpRevRecord mpRevRecord;
     public void addRevokeRequest(RevokeRequest revokeRequest) {
         revokeRequest.setStatus("待审核");
         mpRevRequestMapper.insert(revokeRequest);
@@ -35,12 +36,11 @@ MpRevRecord mpRevRecord;
     }
 
 
+
+
+
     public void updateRevokeRequest(Integer id, String status, String adminRemark, String reason, Long handleTime) {
 
         mpRevRequestMapper.update(id, status, adminRemark, reason, handleTime);
-    }
-
-    public void addRevokedRecord(Integer id, String userId, String reason, Long handleTime) {
-        mpRevRecord.addRevokedRecord(id, userId, reason, handleTime);
     }
 }
