@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
+import top.suyiiyii.sims.common.JwtInterceptor;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
