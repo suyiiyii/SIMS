@@ -124,4 +124,7 @@ public class RecordService {
         return recordMapper.getCategoryIdById(id);
     }
 
+    public List<Record> getRecordsByCategoryId(int page, int size, Integer i) {
+        return recordMapper.getRecordsByCategoryId(page, size, i);
+    }
 }

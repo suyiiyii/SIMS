@@ -87,4 +87,6 @@ public interface RecordMapper {
     void update(Integer id ,Boolean isRevoked,String userId, String adminRemark, String reason, Long handleTime);
 @Update("UPDATE record SET is_revoked=#{isRevoked},operator_user_id=#{userId},revoke_remark = #{reason}, revoke_reason = #{revokeReason} WHERE id = #{id}")
     void Rupdate(Integer id, String reason, Boolean isRevoked,String revokeReason, String userId);
+@Select("SELECT * FROM record WHERE category_id = #{i} LIMIT #{page},#{size}")
+    List<Record> getRecordsByCategoryId(int page, int size, Integer i);
 }
