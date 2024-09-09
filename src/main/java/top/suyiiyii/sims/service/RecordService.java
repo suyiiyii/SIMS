@@ -106,4 +106,15 @@ public class RecordService {
         List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && (catMap.get(c).getStatus() == null || catMap.get(c).getStatus().equals("enable")))).toList();
         return recordDtos.stream().filter(r -> availableCatIds.contains(r.getCategoryId())).toList();
     }
+
+    public void update(Integer id, String userId, String adminRemark, String reason, Long handleTime) {
+        Boolean isRevoked=true;
+        recordMapper.update(id, isRevoked,userId, adminRemark, reason, handleTime);
+    }
+
+    public void revokeUpdate(Integer id, String reason,String userId) {
+        String revokeReason="申请撤销";
+        Boolean isRevoked=true;
+        recordMapper.Rupdate(id, reason,isRevoked,revokeReason,userId);
+    }
 }
