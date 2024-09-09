@@ -106,13 +106,13 @@ public class RevokedController {
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "撤销单个奖惩记录")
     @DeleteMapping("/admin/records/{id}")
-    public Result<CommonResponse> adminDeleteRecord(@PathVariable Integer id, String reason, HttpServletRequest request) {
+    public Result<CommonResponse> adminDeleteRecord(@PathVariable Integer id, String reason,String remark, HttpServletRequest request) {
         Integer i = recordService.IsRecord(id);
         String userId = String.valueOf(JwtInterceptor.getUserIdFromReq(request));
         if(i==null) {
             throw new RuntimeException("该记录不存在");
         }
-        recordService.revokeUpdate(id,reason,userId);
+        recordService.revokeUpdate(id,reason,remark,userId);
         return Result.msg("撤销成功");
     }
 
