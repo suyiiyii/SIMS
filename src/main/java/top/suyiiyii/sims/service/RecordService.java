@@ -124,14 +124,4 @@ public class RecordService {
         return recordMapper.getCategoryIdById(id);
     }
 
-    public void update(Integer id, String userId, String adminRemark, String reason, Long handleTime) {
-        Boolean isRevoked=true;
-        recordMapper.update(id, isRevoked,userId, adminRemark, reason, handleTime);
-    }
-
-    public void revokeUpdate(Integer id, String reason,String userId) {
-        String revokeReason="申请撤销";
-        Boolean isRevoked=true;
-        recordMapper.Rupdate(id, reason,isRevoked,revokeReason,userId);
-    }
 }
