@@ -84,7 +84,7 @@ public class RevokedController {
     //TODO 管理员可以撤销某一成员的奖励或惩罚记录，需填写撤销原因，撤销备注
 
     @AuthAccess(allowRoles = {"admin"})
-    @Operation(summary = "管理员处理撤销申请")
+    @Operation(summary = "管理员处理撤销申请",description = "status:批准/拒绝")
     @PutMapping("/{id}")
     public Result<CommonResponse> revoked(@PathVariable Integer id, RevokedRequest revokedRequest, HttpServletRequest request) {
         String userId = String.valueOf(JwtInterceptor.getUserIdFromReq(request));
@@ -102,7 +102,7 @@ public class RevokedController {
         if ("批准".equals(revokedRequest.getStatus())) {
             revokedService.addRevokedRecord(id,userId,revokedRequest.getReason(),revokedRequest.getHandleTime());
         }
-        return Result.success(CommonResponse.factory("申请成功"));
+        return Result.success(CommonResponse.factory("修改成功"));
     }
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "撤销单个奖惩记录")
