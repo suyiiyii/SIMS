@@ -99,8 +99,9 @@ public class RevokedController {
                 revokedRequest.getStatus(),revokedRequest.getAdminRemark(),
                 revokedRequest.getReason(),revokedRequest.getHandleTime());
             //TODO 要加到记录里面去
+        if ("批准".equals(revokedRequest.getStatus())) {
             revokedService.addRevokedRecord(id,userId,revokedRequest.getReason(),revokedRequest.getHandleTime());
-
+        }
         return Result.success(CommonResponse.factory("申请成功"));
     }
     @AuthAccess(allowRoles = {"admin"})

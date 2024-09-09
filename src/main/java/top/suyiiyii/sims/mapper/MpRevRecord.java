@@ -1,6 +1,8 @@
 package top.suyiiyii.sims.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Update;
 import top.suyiiyii.sims.entity.RevokeRequest;
 import top.suyiiyii.sims.entity.RevokedRecord;
 
@@ -13,5 +15,6 @@ import top.suyiiyii.sims.entity.RevokedRecord;
  * @Version 1.0
  */
 public interface MpRevRecord extends BaseMapper<RevokedRecord> {
+    @Insert("INSERT INTO revoked_record (admin_id, reason, revoked_time, record_id) VALUES (#{userId}, #{reason}, #{handleTime}, #{id})")
     void addRevokedRecord(Integer id, String userId, String reason, Long handleTime);
 }
