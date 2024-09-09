@@ -3,12 +3,14 @@ package top.suyiiyii.sims.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.suyiiyii.sims.common.AuthAccess;
+import top.suyiiyii.sims.common.JwtInterceptor;
 import top.suyiiyii.sims.common.Result;
 import top.suyiiyii.sims.dto.CommonResponse;
 import top.suyiiyii.sims.dto.RecordDto;
@@ -43,8 +45,9 @@ public class RevokedController {
     NotificationService notificationService;
     @Autowired
     CategoryService categoryService;
-@Autowired
+    @Autowired
     RecordService recordService;
+
     //TODO 普通成员向管理员申请撤销
     @AuthAccess(allowRoles = {"user"})
     @Operation(summary = "成员申请撤销")
@@ -83,21 +86,41 @@ public class RevokedController {
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "管理员处理撤销申请")
     @PutMapping("/{id}")
-    public Result<CommonResponse> revoked( @PathVariable Integer id,RevokedRequest revokedRequest) {
+    public Result<CommonResponse> revoked(@PathVariable Integer id, RevokedRequest revokedRequest, HttpServletRequest request) {
+        String userId = String.valueOf(JwtInterceptor.getUserIdFromReq(request));
         if(revokedRequest.getAdminRemark().isBlank()) {
             throw new ServiceException("撤销备注不能为空");
         }
         if(!"批准".equals(revokedRequest.getStatus()) && !"拒绝".equals(revokedRequest.getStatus()) ) {
             throw new ServiceException("状态不合法");
         }
+/*        if("批准".equals(revokedRequest.getStatus())){
+            recordService.update(id,userId,revokedRequest.getStatus(),revokedRequest.getAdminRemark(),
+                    revokedRequest.getReason(),revokedRequest.getHandleTime());
+        }*/
 
         revokedService.updateRevokeRequest(id,
                 revokedRequest.getStatus(),revokedRequest.getAdminRemark(),
                 revokedRequest.getReason(),revokedRequest.getHandleTime());
-//TODO 要加到记录里面去
-        return Result.success(CommonResponse.factory("申请成功"));
+            //TODO 要加到记录里面去
+            revokedService.addRevokedRecord(id,userId,revokedRequest.getReason(),revokedRequest.getHandleTime());
 
+        return Result.success(CommonResponse.factory("申请成功"));
     }
+    @AuthAccess(allowRoles = {"admin"})
+    @Operation(summary = "撤销单个奖惩记录")
+    @DeleteMapping("/admin/records/{id}")
+    public Result<CommonResponse> adminDeleteRecord(@PathVariable Integer id, String reason, HttpServletRequest request) {
+        Integer i = recordService.IsRecord(id);
+        String userId = String.valueOf(JwtInterceptor.getUserIdFromReq(request));
+        if(i==null) {
+            throw new RuntimeException("该记录不存在");
+        }
+        recordService.revokeUpdate(id,reason,userId);
+        return Result.msg("撤销成功");
+    }
+
+
     @Data
     public static class Request {
         private Integer userId;

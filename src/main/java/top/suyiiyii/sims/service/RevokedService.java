@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.suyiiyii.sims.controller.RevokedController;
 import top.suyiiyii.sims.entity.RevokeRequest;
+import top.suyiiyii.sims.mapper.MpRevRecord;
 import top.suyiiyii.sims.mapper.MpRevRequestMapper;
 
 import java.util.List;
@@ -21,7 +22,8 @@ public class RevokedService {
 
     @Autowired
     MpRevRequestMapper mpRevRequestMapper;
-
+@Autowired
+MpRevRecord mpRevRecord;
     public void addRevokeRequest(RevokeRequest revokeRequest) {
         revokeRequest.setStatus("待审核");
         mpRevRequestMapper.insert(revokeRequest);
@@ -35,5 +37,9 @@ public class RevokedService {
     public void updateRevokeRequest(Integer id, String status, String adminRemark, String reason, Long handleTime) {
 
         mpRevRequestMapper.update(id, status, adminRemark, reason, handleTime);
+    }
+
+    public void addRevokedRecord(Integer id, String userId, String reason, Long handleTime) {
+        mpRevRecord.addRevokedRecord(id, userId, reason, handleTime);
     }
 }

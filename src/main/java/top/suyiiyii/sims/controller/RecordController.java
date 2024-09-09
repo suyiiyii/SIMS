@@ -2,6 +2,7 @@ package top.suyiiyii.sims.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
@@ -98,6 +99,7 @@ RecordController {
         recordService.deleteRecord(id);
         return Result.msg("删除成功");
     }
+
 
 
     @AuthAccess(allowRoles = {"admin"})

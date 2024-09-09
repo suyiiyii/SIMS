@@ -83,4 +83,8 @@ public interface RecordMapper {
     Integer IsRecord(Integer id);
 @Select("SELECT category_id FROM record WHERE id = #{id}")
     Integer getCategoryIdById(Integer id);
+@Update("UPDATE record SET is_revoked=#{isRevoked},operator_user_id=#{userId},revoke_remark = #{adminRemark}, revoke_reason = #{reason}, lsat_update_time = #{handleTime} WHERE id = #{id}")
+    void update(Integer id ,Boolean isRevoked,String userId, String adminRemark, String reason, Long handleTime);
+@Update("UPDATE record SET is_revoked=#{isRevoked},operator_user_id=#{userId},revoke_remark = #{reason}, revoke_reason = #{revokeReason} WHERE id = #{id}")
+    void Rupdate(Integer id, String reason, Boolean isRevoked,String revokeReason, String userId);
 }
