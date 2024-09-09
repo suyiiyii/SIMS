@@ -101,6 +101,7 @@ RecordController {
     }
 
 
+
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "添加奖惩记录")
     @PostMapping("/admin/record")

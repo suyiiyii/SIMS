@@ -36,11 +36,12 @@ public class RevokedService {
     }
 
 
-
-
-
     public void updateRevokeRequest(Integer id, String status, String adminRemark, String reason, Long handleTime) {
 
         mpRevRequestMapper.update(id, status, adminRemark, reason, handleTime);
+    }
+
+    public void addRevokedRecord(Integer id, String userId, String reason, Long handleTime) {
+        mpRevRecord.addRevokedRecord(id, userId, reason, handleTime);
     }
 }
