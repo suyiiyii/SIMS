@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import top.suyiiyii.sims.controller.UserController;
 import top.suyiiyii.sims.dto.UserDto;
+import top.suyiiyii.sims.entity.HierarchyRelation;
 import top.suyiiyii.sims.entity.Role;
 import top.suyiiyii.sims.entity.User;
 import top.suyiiyii.sims.exception.ServiceException;
-import top.suyiiyii.sims.mapper.MpUserMapper;
-import top.suyiiyii.sims.mapper.PermissionsMapper;
-import top.suyiiyii.sims.mapper.RoleMapper;
-import top.suyiiyii.sims.mapper.UserMapper;
+import top.suyiiyii.sims.mapper.*;
 import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
@@ -44,6 +42,8 @@ public class UserService {
     private RbacService rbacService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private HierarchyMapper hierarchyMapper;
 
     public void deleteUser(int id) {
         userMapper.deleteUser(id);
@@ -77,6 +77,7 @@ public class UserService {
         mpUserMapper.insert(user);
         user = mpUserMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, req.getUsername()));
         rbacService.addRoleWithUserId(user.getId(), "user");
+        hierarchyMapper.insert(new HierarchyRelation(null,0, user.getId()));
     }
 
 
