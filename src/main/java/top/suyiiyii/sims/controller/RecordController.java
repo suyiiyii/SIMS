@@ -2,6 +2,8 @@ package top.suyiiyii.sims.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import top.suyiiyii.sims.service.CategoryService;
 import top.suyiiyii.sims.service.RecordService;
 import top.suyiiyii.sims.service.RoleService;
 import top.suyiiyii.sims.service.UserService;
+import top.suyiiyii.sims.utils.JwtUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -98,6 +101,7 @@ RecordController {
     }
 
 
+
     @AuthAccess(allowRoles = {"admin"})
     @Operation(summary = "添加奖惩记录")
     @PostMapping("/admin/record")
@@ -121,7 +125,6 @@ RecordController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             SearchRequest searchRequest) {
-
         Integer s1;
         List<Integer> studentIds = new ArrayList<>();
         List<Record> records=new ArrayList<>();
@@ -169,16 +172,10 @@ RecordController {
             return Result.error("请选择正确奖惩类别");
         }
         List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
-        for (Integer i : idByCategoryName) {
-            List<Integer> sid = recordService.getSidByCategoryId(i);
-            studentIds.addAll(sid);
-        }
         List<Record> records=new ArrayList<>();
-        HashSet<Integer> studentIds1= new HashSet<>(studentIds);
-        for (Integer Sid : studentIds1) {
-            if(Sid!=null){
-                records.addAll(recordService.getRecordsById(page,size,Sid));
-            }
+        for (Integer i : idByCategoryName) {
+            List<Record> recordsByCategoryId = recordService.getRecordsByCategoryId(page, size, i);
+            records.addAll(recordsByCategoryId);
         }
         List<RecordDto> RecordDtos = new ArrayList<>();
         for (Record record : records) {
@@ -198,25 +195,20 @@ RecordController {
             @RequestParam(defaultValue = "10") int size,
             String categoryName,HttpServletRequest request) {
         int userId = JwtInterceptor.getUserIdFromReq(request);
-        List<Integer> studentIds = new ArrayList<>();
         //CategoryName不是奖励或者惩罚
         if (!categoryName.equals("奖励")
                 && !categoryName.equals("惩罚")) {
             return Result.error("请选择正确奖惩类别");
         }
+        Integer studentId = userService.getStudentIdByUserId(userId);
         List<Integer> idByCategoryName = categoryService.getIdByCategoryName(categoryName);
-        for (Integer i : idByCategoryName) {
-            List<Integer> sid = recordService.getSidByCategoryId(i);
-            if(sid!=null) {
-                studentIds.addAll(sid);
-            }
-        }
         List<Record> records=new ArrayList<>();
-        HashSet<Integer> studentIds1= new HashSet<>(studentIds);
-        for (Integer Sid : studentIds1) {
-            Integer studentId1 =userService.getStudentIdByUserId(userId);
-            if (studentId1!= null && studentId1.equals(Sid)) {
-                records.addAll(recordService.getRecordsById(page, size, Sid));
+        for (Integer i : idByCategoryName) {
+            List<Record> records1 = recordService.getRecordsByCategoryId(page, size, i);
+            for (Record record : records1) {
+                if (record.getStudentId()==studentId) {
+                    records.add(record);
+                }
             }
         }
         List<RecordDto> RecordDtos = new ArrayList<>();

@@ -4,6 +4,7 @@ package top.suyiiyii.sims.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import top.suyiiyii.sims.dto.RecordDto;
 import top.suyiiyii.sims.entity.Record;
 import top.suyiiyii.sims.entity.RewardPunishmentCategory;
@@ -63,7 +64,7 @@ public class RecordService {
 
         //查看数据库里面是否有这个类别
         String subCategoryName = categoryMapper.IsSubCategoryName(recordDto.getSubCategoryName());
-        if (subCategoryName == null) {
+        if(subCategoryName == null) {
             //没有这个类别就加上
             categoryMapper.addsubcategory(recordDto.getCategoryName(), recordDto.getSubCategoryName());
         }
@@ -75,11 +76,12 @@ public class RecordService {
     }
 
     public List<Record> getRecordsLike(int page, int size, Integer studentId, String userGroup, String grade) {
-        return recordMapper.getRecordsLike(page, size, studentId, userGroup, grade);
+        return recordMapper.getRecordsLike(page, size, studentId, userGroup,grade);
     }
 
 
-    public List<Integer> getSidByCategoryId(Integer i) {
+
+    public  List<Integer> getSidByCategoryId(Integer i) {
         return recordMapper.getSidByCategoryId(i);
     }
 
@@ -105,5 +107,23 @@ public class RecordService {
         Map<Integer, RewardPunishmentCategory> catMap = categories.stream().collect(Collectors.toMap(RewardPunishmentCategory::getId, c -> c));
         List<Integer> availableCatIds = catIds.stream().filter(c -> (catMap.containsKey(c) && (catMap.get(c).getStatus() == null || catMap.get(c).getStatus().equals("enable")))).toList();
         return recordDtos.stream().filter(r -> availableCatIds.contains(r.getCategoryId())).toList();
+    }
+
+    public void update(Integer id, String userId, String adminRemark, String reason, Long handleTime) {
+        Boolean isRevoked=true;
+        recordMapper.update(id, isRevoked,userId, adminRemark, reason, handleTime);
+    }
+
+    public void revokeUpdate(Integer id, String reason,String remark,String userId) {
+        Boolean isRevoked=true;
+        recordMapper.Rupdate(id, isRevoked,reason,remark,userId);
+    }
+
+    public Integer getCategoryIdById(Integer  id) {
+        return recordMapper.getCategoryIdById(id);
+    }
+
+    public List<Record> getRecordsByCategoryId(int page, int size, Integer i) {
+        return recordMapper.getRecordsByCategoryId(page, size, i);
     }
 }
